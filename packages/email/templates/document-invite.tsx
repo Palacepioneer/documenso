@@ -2,7 +2,7 @@ import { RECIPIENT_ROLES_DESCRIPTION } from '@documenso/lib/constants/recipient-
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { RecipientRole } from '@prisma/client';
-import { OrganisationType } from '@prisma/client';
+import type { OrganisationType } from '@prisma/client';
 
 import type { TemplateDocumentInviteProps } from '../template-components/template-document-invite';
 import { TemplateDocumentInvite } from '../template-components/template-document-invite';
@@ -36,16 +36,12 @@ export const DocumentInviteEmailTemplate = ({
 
   const action = _(RECIPIENT_ROLES_DESCRIPTION[role].actionVerb).toLowerCase();
 
-  let previewText = msg`${inviterName} sent you ${documentName} to ${action}`;
-
-  if (organisationType === OrganisationType.ORGANISATION) {
-    previewText = includeSenderDetails
-      ? msg`${inviterName} at ${teamName} sent you ${documentName} to ${action}`
-      : msg`${teamName} sent you ${documentName} to ${action}`;
-  }
+  // Jess fork: first-person preview — Jess speaks as "I", never about herself
+  // in third person (operator directive 2026-06-10).
+  let previewText = msg`I need you to ${action} ${documentName}`;
 
   if (selfSigner) {
-    previewText = msg`your document ${documentName} is ready to ${action}`;
+    previewText = msg`Your document ${documentName} is ready to ${action}`;
   }
 
   return (

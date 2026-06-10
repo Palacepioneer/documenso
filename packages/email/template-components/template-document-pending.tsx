@@ -18,13 +18,13 @@ export const TemplateDocumentPending = ({ documentName, signedCount, totalCount 
 
   return (
     <Section className="mt-2">
-      <TemplateStatusBadge label="waiting on others" tone="navy" className="mb-4" />
+      <TemplateStatusBadge label="Waiting on others" tone="navy" className="mb-4" />
 
       <Text
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
         style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
       >
-        <Trans>your signature's in</Trans>
+        <Trans>Your signature's in</Trans>
       </Text>
 
       <Text
@@ -33,13 +33,13 @@ export const TemplateDocumentPending = ({ documentName, signedCount, totalCount 
       >
         {showProgress ? (
           <Trans>
-            your part of “{docDisplayName}” is done — that's {signedCount} of {totalCount}{' '}
-            signatures in. you'll get the final copy as soon as everyone has signed.
+            Your part of “{docDisplayName}” is done — that's {signedCount} of {totalCount}{' '}
+            signatures in. I'll send you the final copy as soon as everyone has signed.
           </Trans>
         ) : (
           <Trans>
-            your part of “{docDisplayName}” is done. we're waiting on the other signers — you'll
-            get the final copy as soon as everyone has signed.
+            Your part of “{docDisplayName}” is done. I'm waiting on the other signers — I'll send
+            you the final copy as soon as everyone has signed.
           </Trans>
         )}
       </Text>

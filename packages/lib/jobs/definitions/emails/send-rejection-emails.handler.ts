@@ -102,7 +102,7 @@ export const run = async ({ payload, io }: { payload: TSendSigningRejectionEmail
         },
         from: senderEmail,
         replyTo: replyToEmail,
-        subject: i18n._(msg`you declined "${envelope.title}"`),
+        subject: i18n._(msg`You declined "${envelope.title}"`),
         html,
         text,
       });

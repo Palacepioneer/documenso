@@ -30,7 +30,7 @@ export const TemplateDocumentRecipientSigned = ({
 
   return (
     <Section className="mt-2">
-      <TemplateStatusBadge label="signed" tone="gold" className="mb-4" />
+      <TemplateStatusBadge label="Signed" tone="gold" className="mb-4" />
 
       <Text
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
@@ -45,11 +45,11 @@ export const TemplateDocumentRecipientSigned = ({
       <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
         {showProgress ? (
           <Trans>
-            that's {signedCount} of {totalCount} signatures in — you'll get the final copy when
+            That's {signedCount} of {totalCount} signatures in — you'll get the final copy when
             everyone's signed.
           </Trans>
         ) : (
-          <Trans>their part's done — you'll get the final copy once everyone has signed.</Trans>
+          <Trans>Their part's done — you'll get the final copy once everyone has signed.</Trans>
         )}
       </Text>
 
@@ -64,7 +64,7 @@ export const TemplateDocumentRecipientSigned = ({
             }}
             href={documentLink}
           >
-            <Trans>view the document</Trans>
+            <Trans>View the document</Trans>
           </Button>
         </Section>
       )}

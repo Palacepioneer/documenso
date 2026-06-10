@@ -7,7 +7,7 @@ import { TemplateCustomMessageBody } from './template-custom-message-body';
 export interface TemplateDocumentCompletedSigner {
   name: string;
   email: string;
-  /** Drawn signature (inline CID image in real sends, data URI in previews). */
+  /** Drawn signature (HMAC-signed https URL in real sends, data URI in previews). */
   signatureImageSrc?: string;
   /** Typed signature, rendered as text. */
   typedSignature?: string;
@@ -69,7 +69,7 @@ export const TemplateDocumentCompleted = ({
         className="my-0 text-center font-semibold text-xs tracking-[0.12em]"
         style={{ color: JESS_COLORS.goldDark, textTransform: 'uppercase' }}
       >
-        <Trans>all signed</Trans>
+        <Trans>All signed</Trans>
       </Text>
 
       <Text
@@ -90,9 +90,9 @@ export const TemplateDocumentCompleted = ({
       ) : (
         <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
           {hasAttachments ? (
-            <Trans>everyone's in — your signed copy is attached to this email.</Trans>
+            <Trans>All signed — your copy's attached. — Jess</Trans>
           ) : (
-            <Trans>everyone's in — your final copy is ready below.</Trans>
+            <Trans>All signed — your final copy is ready below. — Jess</Trans>
           )}
         </Text>
       )}
@@ -103,7 +103,7 @@ export const TemplateDocumentCompleted = ({
             className="my-0 text-center font-semibold text-xs tracking-[0.12em]"
             style={{ color: JESS_COLORS.goldDark, textTransform: 'uppercase' }}
           >
-            <Trans>signed by</Trans>
+            <Trans>Signed by</Trans>
           </Text>
 
           {signers.map((signer, index) => (
@@ -144,7 +144,7 @@ export const TemplateDocumentCompleted = ({
           style={{ backgroundColor: JESS_COLORS.gold, color: JESS_COLORS.navy }}
           href={downloadLink}
         >
-          <Trans>download your copy</Trans>
+          <Trans>Download your copy</Trans>
         </Button>
       </Section>
     </Section>

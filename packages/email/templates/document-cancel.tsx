@@ -16,7 +16,7 @@ export const DocumentCancelTemplate = ({
 }: DocumentCancelEmailTemplateProps) => {
   const { _ } = useLingui();
 
-  const previewText = msg`${inviterName} cancelled ${documentName} — no signature needed anymore`;
+  const previewText = msg`I've cancelled ${documentName} — no signature needed anymore`;
 
   return (
     <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>

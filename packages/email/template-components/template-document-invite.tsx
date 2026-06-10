@@ -1,8 +1,9 @@
 import { RECIPIENT_ROLES_DESCRIPTION } from '@documenso/lib/constants/recipient-roles';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { OrganisationType, RecipientRole } from '@prisma/client';
-import { match, P } from 'ts-pattern';
+import type { OrganisationType } from '@prisma/client';
+import { RecipientRole } from '@prisma/client';
+import { match } from 'ts-pattern';
 
 import { Button, Section, Text } from '../components';
 import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
@@ -25,15 +26,13 @@ export interface TemplateDocumentInviteProps {
   documentThumbnailSrc?: string;
 }
 
+// Jess fork: structural copy is hardcoded first-person — Jess speaks as "I",
+// never about herself in third person (operator directive 2026-06-10).
 export const TemplateDocumentInvite = ({
-  inviterName,
   documentName,
   signDocumentLink,
   role,
   selfSigner,
-  teamName,
-  includeSenderDetails,
-  organisationType,
   customBody,
   documentThumbnailSrc,
 }: TemplateDocumentInviteProps) => {
@@ -50,35 +49,40 @@ export const TemplateDocumentInvite = ({
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
         style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
       >
-        {match({ selfSigner, organisationType, includeSenderDetails, teamName })
+        {match({ selfSigner, role })
           .with({ selfSigner: true }, () => (
             <Trans>
-              your document is ready to {action}
+              Your document is ready to {action}
               <br />“{docDisplayName}”
             </Trans>
           ))
-          .with(
-            {
-              organisationType: OrganisationType.ORGANISATION,
-              includeSenderDetails: true,
-              teamName: P.string,
-            },
-            () => (
-              <Trans>
-                {inviterName} at {teamName} sent you
-                <br />“{docDisplayName}” to {action}
-              </Trans>
-            ),
-          )
-          .with({ organisationType: OrganisationType.ORGANISATION, teamName: P.string }, () => (
+          .with({ role: RecipientRole.SIGNER }, () => (
             <Trans>
-              {teamName} sent you
-              <br />“{docDisplayName}” to {action}
+              I need your signature on
+              <br />“{docDisplayName}”
+            </Trans>
+          ))
+          .with({ role: RecipientRole.APPROVER }, () => (
+            <Trans>
+              I need your approval on
+              <br />“{docDisplayName}”
+            </Trans>
+          ))
+          .with({ role: RecipientRole.VIEWER }, () => (
+            <Trans>
+              I'd like you to take a look at
+              <br />“{docDisplayName}”
+            </Trans>
+          ))
+          .with({ role: RecipientRole.ASSISTANT }, () => (
+            <Trans>
+              I need your help with
+              <br />“{docDisplayName}”
             </Trans>
           ))
           .otherwise(() => (
             <Trans>
-              {inviterName} sent you
+              I've sent you
               <br />“{docDisplayName}” to {action}
             </Trans>
           ))}
@@ -91,11 +95,11 @@ export const TemplateDocumentInvite = ({
       ) : (
         <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
           {match(role)
-            .with(RecipientRole.SIGNER, () => <Trans>it takes about a minute — open it below.</Trans>)
-            .with(RecipientRole.VIEWER, () => <Trans>a quick read — open it below.</Trans>)
-            .with(RecipientRole.APPROVER, () => <Trans>your approval is the last step — open it below.</Trans>)
+            .with(RecipientRole.SIGNER, () => <Trans>It takes about a minute — open it below.</Trans>)
+            .with(RecipientRole.VIEWER, () => <Trans>A quick read — open it below.</Trans>)
+            .with(RecipientRole.APPROVER, () => <Trans>Your approval is the last step — open it below.</Trans>)
             .with(RecipientRole.CC, () => '')
-            .with(RecipientRole.ASSISTANT, () => <Trans>you can fill it in for them — open it below.</Trans>)
+            .with(RecipientRole.ASSISTANT, () => <Trans>You can fill it in for them — open it below.</Trans>)
             .exhaustive()}
         </Text>
       )}
@@ -111,18 +115,18 @@ export const TemplateDocumentInvite = ({
           href={signDocumentLink}
         >
           {match(role)
-            .with(RecipientRole.SIGNER, () => <Trans>review &amp; sign</Trans>)
-            .with(RecipientRole.VIEWER, () => <Trans>view the document</Trans>)
-            .with(RecipientRole.APPROVER, () => <Trans>review &amp; approve</Trans>)
+            .with(RecipientRole.SIGNER, () => <Trans>Review &amp; sign</Trans>)
+            .with(RecipientRole.VIEWER, () => <Trans>View the document</Trans>)
+            .with(RecipientRole.APPROVER, () => <Trans>Review &amp; approve</Trans>)
             .with(RecipientRole.CC, () => '')
-            .with(RecipientRole.ASSISTANT, () => <Trans>open &amp; assist</Trans>)
+            .with(RecipientRole.ASSISTANT, () => <Trans>Open &amp; assist</Trans>)
             .exhaustive()}
         </Button>
       </Section>
 
       {!customBody && (
         <Text className="mt-0 mb-2 text-center text-sm" style={{ color: JESS_COLORS.muted }}>
-          <Trans>questions? just reply to this email.</Trans>
+          <Trans>Questions? Just reply to this email.</Trans>
         </Text>
       )}
     </Section>

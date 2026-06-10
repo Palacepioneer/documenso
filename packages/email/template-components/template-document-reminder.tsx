@@ -38,27 +38,47 @@ export const TemplateDocumentReminder = ({
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
         style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
       >
-        <Trans>
-          “{docDisplayName}”
-          <br />
-          is still waiting for you
-        </Trans>
+        {match(role)
+          .with(RecipientRole.SIGNER, () => (
+            <Trans>
+              I'm still waiting on your signature for
+              <br />“{docDisplayName}”
+            </Trans>
+          ))
+          .with(RecipientRole.APPROVER, () => (
+            <Trans>
+              I'm still waiting on your approval for
+              <br />“{docDisplayName}”
+            </Trans>
+          ))
+          .with(RecipientRole.ASSISTANT, () => (
+            <Trans>
+              I still need your help with
+              <br />“{docDisplayName}”
+            </Trans>
+          ))
+          .otherwise(() => (
+            <Trans>
+              I'm still waiting on you to open
+              <br />“{docDisplayName}”
+            </Trans>
+          ))}
       </Text>
 
       <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
         {match(role)
           .with(RecipientRole.SIGNER, () => (
-            <Trans>hi {recipientName} — just a nudge, signing takes about a minute.</Trans>
+            <Trans>Hi {recipientName} — just a nudge, signing takes about a minute.</Trans>
           ))
           .with(RecipientRole.VIEWER, () => (
-            <Trans>hi {recipientName} — just a nudge, it's a quick read.</Trans>
+            <Trans>Hi {recipientName} — just a nudge, it's a quick read.</Trans>
           ))
           .with(RecipientRole.APPROVER, () => (
-            <Trans>hi {recipientName} — just a nudge, your approval is the last step.</Trans>
+            <Trans>Hi {recipientName} — just a nudge, your approval is the last step.</Trans>
           ))
           .with(RecipientRole.CC, () => '')
           .with(RecipientRole.ASSISTANT, () => (
-            <Trans>hi {recipientName} — just a nudge, they're waiting on your help.</Trans>
+            <Trans>Hi {recipientName} — just a nudge, they're waiting on your help.</Trans>
           ))
           .exhaustive()}
       </Text>
@@ -80,18 +100,18 @@ export const TemplateDocumentReminder = ({
           href={signDocumentLink}
         >
           {match(role)
-            .with(RecipientRole.SIGNER, () => <Trans>pick up where you left off</Trans>)
-            .with(RecipientRole.VIEWER, () => <Trans>view the document</Trans>)
-            .with(RecipientRole.APPROVER, () => <Trans>review &amp; approve</Trans>)
+            .with(RecipientRole.SIGNER, () => <Trans>Pick up where you left off</Trans>)
+            .with(RecipientRole.VIEWER, () => <Trans>View the document</Trans>)
+            .with(RecipientRole.APPROVER, () => <Trans>Review &amp; approve</Trans>)
             .with(RecipientRole.CC, () => '')
-            .with(RecipientRole.ASSISTANT, () => <Trans>open &amp; assist</Trans>)
+            .with(RecipientRole.ASSISTANT, () => <Trans>Open &amp; assist</Trans>)
             .exhaustive()}
         </Button>
       </Section>
 
       {!customBody && (
         <Text className="mt-0 mb-2 text-center text-sm" style={{ color: JESS_COLORS.muted }}>
-          <Trans>questions? just reply to this email.</Trans>
+          <Trans>Questions? Just reply to this email.</Trans>
         </Text>
       )}
     </Section>

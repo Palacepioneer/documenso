@@ -20,7 +20,7 @@ export const DocumentCompletedEmailTemplate = ({
 }: DocumentCompletedEmailTemplateProps) => {
   const { _ } = useLingui();
 
-  const previewText = msg`all signed — ${documentName} is complete, your copy is ready`;
+  const previewText = msg`All signed — ${documentName} is complete, your copy is ready`;
 
   return (
     <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>

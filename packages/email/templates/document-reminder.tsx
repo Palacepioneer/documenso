@@ -30,7 +30,7 @@ export const DocumentReminderEmailTemplate = ({
 
   const action = _(RECIPIENT_ROLES_DESCRIPTION[role].actionVerb).toLowerCase();
 
-  const previewText = msg`a quick nudge — ${documentName} is waiting for you to ${action}`;
+  const previewText = msg`Quick reminder — I'm still waiting on you to ${action} ${documentName}`;
 
   return (
     <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>

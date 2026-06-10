@@ -21,7 +21,7 @@ export const TemplateDocumentCancel = ({
 
   return (
     <Section className="mt-2">
-      <TemplateStatusBadge label="cancelled" tone="muted" className="mb-4" />
+      <TemplateStatusBadge label="Cancelled" tone="muted" className="mb-4" />
 
       <Text
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
@@ -39,8 +39,8 @@ export const TemplateDocumentCancel = ({
         style={{ color: JESS_COLORS.muted }}
       >
         <Trans>
-          {inviterName} cancelled this document — all signatures are void and there's nothing you
-          need to do.
+          I've cancelled this document — all signatures are void and there's nothing you need to
+          do.
         </Trans>
       </Text>
 
@@ -50,7 +50,7 @@ export const TemplateDocumentCancel = ({
           {...({ bgcolor: '#FFFFFF' } as object)}
         >
           <Text className="my-0 text-sm font-semibold" style={{ color: JESS_COLORS.muted }}>
-            <Trans>reason</Trans>
+            <Trans>Reason</Trans>
           </Text>
           <Text className="mt-1 mb-0 text-base leading-relaxed" style={{ color: JESS_COLORS.navy }}>
             “{cancellationReason}”

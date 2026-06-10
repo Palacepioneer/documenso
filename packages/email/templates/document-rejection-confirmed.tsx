@@ -21,7 +21,7 @@ export function DocumentRejectionConfirmedEmail({
 }: DocumentRejectionConfirmedEmailProps) {
   const { _ } = useLingui();
 
-  const previewText = _(msg`you declined ${documentName} — ${documentOwnerName} has been notified`);
+  const previewText = _(msg`You declined ${documentName} — I've been notified`);
 
   return (
     <TemplateEmailShell previewText={previewText} assetBaseUrl={assetBaseUrl}>

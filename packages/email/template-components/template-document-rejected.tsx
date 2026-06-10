@@ -21,7 +21,7 @@ export function TemplateDocumentRejected({
 
   return (
     <Section className="mt-2">
-      <TemplateStatusBadge label="declined" tone="terracotta" className="mb-4" />
+      <TemplateStatusBadge label="Declined" tone="terracotta" className="mb-4" />
 
       <Text
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
@@ -39,7 +39,7 @@ export function TemplateDocumentRejected({
           {...({ bgcolor: '#FFFFFF' } as object)}
         >
           <Text className="my-0 text-sm font-semibold" style={{ color: JESS_COLORS.muted }}>
-            <Trans>their reason</Trans>
+            <Trans>Their reason</Trans>
           </Text>
           <Text className="mt-1 mb-0 text-base leading-relaxed" style={{ color: JESS_COLORS.navy }}>
             “{rejectionReason}”
@@ -48,7 +48,7 @@ export function TemplateDocumentRejected({
       )}
 
       <Text className="mt-6 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
-        <Trans>you can reply to them directly, or open the document to adjust and resend.</Trans>
+        <Trans>You can reply to them directly, or open the document to adjust and resend.</Trans>
       </Text>
 
       <Section className="mt-8 mb-4 text-center">
@@ -57,7 +57,7 @@ export function TemplateDocumentRejected({
           style={{ backgroundColor: JESS_COLORS.gold, color: JESS_COLORS.navy }}
           href={documentUrl}
         >
-          <Trans>view the document</Trans>
+          <Trans>View the document</Trans>
         </Button>
       </Section>
     </Section>

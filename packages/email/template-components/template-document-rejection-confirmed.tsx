@@ -20,14 +20,14 @@ export function TemplateDocumentRejectionConfirmed({
 
   return (
     <Section className="mt-2">
-      <TemplateStatusBadge label="declined" tone="terracotta" className="mb-4" />
+      <TemplateStatusBadge label="Declined" tone="terracotta" className="mb-4" />
 
       <Text
         className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
         style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
       >
         <Trans>
-          you declined
+          You declined
           <br />“{docDisplayName}”
         </Trans>
       </Text>
@@ -38,7 +38,7 @@ export function TemplateDocumentRejectionConfirmed({
           {...({ bgcolor: '#FFFFFF' } as object)}
         >
           <Text className="my-0 text-sm font-semibold" style={{ color: JESS_COLORS.muted }}>
-            <Trans>your reason</Trans>
+            <Trans>Your reason</Trans>
           </Text>
           <Text className="mt-1 mb-0 text-base leading-relaxed" style={{ color: JESS_COLORS.navy }}>
             “{reason}”
@@ -51,8 +51,8 @@ export function TemplateDocumentRejectionConfirmed({
         style={{ color: JESS_COLORS.muted }}
       >
         <Trans>
-          {documentOwnerName} has been notified — nothing else is needed from you. if you change
-          your mind or have questions, just reply to this email.
+          I've been notified — nothing else is needed from you. If you change your mind or have
+          questions, just reply to this email.
         </Trans>
       </Text>
     </Section>
