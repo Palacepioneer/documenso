@@ -85,6 +85,12 @@ export default function SignIn({ loaderData }: Route.ComponentProps) {
           </Alert>
         )}
 
+        <img
+          src="/branding/logo-jess.png"
+          alt="Jess Intelligence"
+          className="mb-4 h-12 w-auto"
+        />
+
         <h1 className="font-semibold text-2xl">
           <Trans>Sign in to your account</Trans>
         </h1>

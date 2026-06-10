@@ -58,7 +58,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
   const [currentLine, setCurrentLine] = useState<Point[]>([]);
   const [isSignatureValid, setIsSignatureValid] = useState<boolean | null>(null);
 
-  const [selectedColor, setSelectedColor] = useState('#15243B');
+  const [selectedColor, setSelectedColor] = useState('#1A2844');
 
   const perfectFreehandOptions = useMemo(() => {
     const size = $el.current ? Math.min($el.current.height, $el.current.width) * 0.03 : 10;
@@ -265,7 +265,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
         data-testid="signature-pad-draw"
         ref={$el}
         className={cn('h-full w-full', {
-          'dark:hue-rotate-180 dark:invert': selectedColor === 'black' || selectedColor === '#15243B',
+          'dark:hue-rotate-180 dark:invert': selectedColor === 'black' || selectedColor === '#1A2844',
         })}
         style={{ touchAction: 'none' }}
         onPointerMove={(event) => onMouseMove(event)}

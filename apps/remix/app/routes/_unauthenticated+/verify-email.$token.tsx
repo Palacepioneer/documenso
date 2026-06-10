@@ -133,7 +133,7 @@ export default function VerifyEmailPage({ loaderData }: Route.ComponentProps) {
       <div className="w-screen max-w-lg px-4">
         <div className="flex w-full items-start">
           <div className="mt-1 mr-4 hidden md:block">
-            <CheckCircle2 className="h-10 w-10 text-green-500" strokeWidth={2} />
+            <CheckCircle2 className="h-10 w-10 text-documenso-700" strokeWidth={2} />
           </div>
 
           <div>
@@ -158,7 +158,7 @@ export default function VerifyEmailPage({ loaderData }: Route.ComponentProps) {
       <div className="w-screen max-w-lg px-4">
         <div className="flex w-full items-start">
           <div className="mt-1 mr-4 hidden md:block">
-            <CheckCircle2 className="h-10 w-10 text-green-500" strokeWidth={2} />
+            <CheckCircle2 className="h-10 w-10 text-documenso-700" strokeWidth={2} />
           </div>
 
           <div>

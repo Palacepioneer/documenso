@@ -4,7 +4,6 @@ import { isDocumentCompleted } from '@documenso/lib/utils/document';
 import { getEnvelopeItemPermissions, mapSecondaryIdToDocumentId } from '@documenso/lib/utils/envelope';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
 import { trpc as trpcReact } from '@documenso/trpc/react';
-import { DocumentShareButton } from '@documenso/ui/components/document/document-share-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,11 +18,9 @@ import {
   Download,
   Edit,
   FileOutputIcon,
-  Loader,
   MoreHorizontal,
   Pencil,
   ScrollTextIcon,
-  Share,
   Trash2,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -178,19 +175,6 @@ export const DocumentPageViewDropdown = ({ envelope }: DocumentPageViewDropdownP
             id: mapSecondaryIdToDocumentId(envelope.secondaryId),
           }}
           recipients={nonSignedRecipients}
-        />
-
-        <DocumentShareButton
-          documentId={mapSecondaryIdToDocumentId(envelope.secondaryId)}
-          token={isOwner ? undefined : recipient?.token}
-          trigger={({ loading, disabled }) => (
-            <DropdownMenuItem disabled={disabled || isDraft} onSelect={(e) => e.preventDefault()}>
-              <div className="flex items-center">
-                {loading ? <Loader className="mr-2 h-4 w-4" /> : <Share className="mr-2 h-4 w-4" />}
-                <Trans>Share Signing Card</Trans>
-              </div>
-            </DropdownMenuItem>
-          )}
         />
       </DropdownMenuContent>
 

@@ -29,22 +29,22 @@ export const DEFAULT_BRAND_COLORS = {
   card: '#ffffff', //                    0 0% 100%
   cardBorder: '#e2e8f0', //              214.3 31.8% 91.4%
   cardForeground: '#0f172a', //          222.2 47.4% 11.2%
-  fieldCard: '#f2e6cd', //               40.54 58.73% 87.65%
-  fieldCardBorder: '#c2933b', //         39.11 53.36% 49.61%
-  fieldCardForeground: '#15243b', //     216.32 47.5% 15.69%
+  fieldCard: '#f2e8cd', //               43.28 58.73% 87.65%
+  fieldCardBorder: '#b39139', //         43.28 51.69% 46.27%
+  fieldCardForeground: '#1a2844', //     220 44.68% 18.43%
   widget: '#f7f7f7', //                  0 0% 97%
   widgetForeground: '#f2f2f2', //        0 0% 95%
   border: '#e2e8f0', //                  214.3 31.8% 91.4%
   input: '#e2e8f0', //                   214.3 31.8% 91.4%
-  primary: '#c2933b', //                 39.11 53.36% 49.61%
-  primaryForeground: '#15243b', //       216.32 47.5% 15.69%
+  primary: '#b39139', //                 43.28 51.69% 46.27%
+  primaryForeground: '#1a2844', //       220 44.68% 18.43%
   secondary: '#f1f5f9', //               210 40% 96.1%
   secondaryForeground: '#0f172a', //     222.2 47.4% 11.2%
   accent: '#f1f5f9', //                  210 40% 96.1%
   accentForeground: '#0f172a', //        222.2 47.4% 11.2%
   destructive: '#ff0000', //             0 100% 50%
   destructiveForeground: '#f8fafc', //   210 40% 98%
-  ring: '#c2933b', //                    39.11 53.36% 49.61%
+  ring: '#b39139', //                    43.28 51.69% 46.27%
   warning: '#e1cb05', //                 54 96% 45%
   envelopeEditorBackground: '#f8fafc', //210 40% 98.04%
   // `cardBorderTint` is intentionally excluded from the colour-picker UI:

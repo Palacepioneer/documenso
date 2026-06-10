@@ -165,7 +165,7 @@ const SigningCardContent = ({ className, name, signature }: SigningCardContentPr
             <span
               className="break-all font-semibold duration-300"
               style={{
-                color: '#15243B',
+                color: '#1A2844',
                 fontSize: `max(min(4rem, ${(100 / signature.typedSignature.length / 2).toFixed(4)}cqw), 1.875rem)`,
               }}
             >
@@ -176,7 +176,7 @@ const SigningCardContent = ({ className, name, signature }: SigningCardContentPr
             <span
               className="break-all font-semibold duration-300"
               style={{
-                color: '#15243B',
+                color: '#1A2844',
                 fontSize: `max(min(4rem, ${(100 / name.length / 2).toFixed(4)}cqw), 1.875rem)`,
               }}
             >

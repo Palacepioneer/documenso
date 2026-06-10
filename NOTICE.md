@@ -28,12 +28,26 @@ forked from the upstream tag **v2.11.0**.
   `apps/remix/app/routes/api+/email.signature.$signatureId.ts`, helper in
   `packages/lib/server-only/email/email-asset-token.ts`) — inline CID images
   were not rendered by Gmail when sent through the Resend API.
+- jessmail.4 increment: stock lime theme replaced with Jess gold/navy at the
+  root (`packages/ui/styles/theme.css`, `packages/tailwind-config/index.cjs`,
+  `packages/lib/constants/theme.ts`); Jess mark on all recipient/embed
+  surfaces; dark mode disabled on recipient routes; completion page rewritten
+  (share widget and signup pitch removed); Jess signature block on all
+  lifecycle emails; header logo at 6rem.
+- jessmail.5 increment: canonical brand palette re-sampled from the
+  operator-approved 2026-06-10 logo — navy `#1A2844`, gold `#B39139` replace
+  the interim `#15243B`/`#C2933B` everywhere (theme.css, tailwind `documenso`
+  ramp, email tokens, signature ink); new logo + favicon set (script "J." mark)
+  shipped in `apps/remix/public`; sign-in page shows the Jess mark; completion
+  page download CTA promoted to the primary action ("Download signed copy");
+  "Share Signing Card" dropdown items removed; last off-palette email colors
+  (lime `#7AC455` text, lime `completed.png`, blue `clock.png`) recolored.
 - No changes to signing logic, storage, auth, or any other subsystem.
 
 ## License & source offer (AGPL-3.0 §13)
 Documenso is licensed under the GNU Affero General Public License v3.0
 (see `LICENSE`). This modified source is published to satisfy AGPL §13: it
-corresponds to the container image `documenso-jess:v2.11.0-jessmail.3`
+corresponds to the container image `documenso-jess:v2.11.0-jessmail.5`
 which serves users at https://sign.jessintelligence.com.
 
 Upstream project: https://github.com/documenso/documenso

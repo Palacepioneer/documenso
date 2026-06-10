@@ -253,9 +253,9 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
                   envelopeItems={document.envelopeItems}
                   token={recipient?.token}
                   trigger={
-                    <Button type="button" variant="outline" className="flex-1 md:flex-initial">
+                    <Button type="button" className="flex-1 md:flex-initial">
                       <DownloadIcon className="mr-2 h-5 w-5" />
-                      <Trans>Download</Trans>
+                      <Trans>Download signed copy</Trans>
                     </Button>
                   }
                 />

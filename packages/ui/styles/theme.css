@@ -16,12 +16,12 @@
 
     --card: 0 0% 100%;
     --card-border: 214.3 31.8% 91.4%;
-    --card-border-tint: 212 178 122;
+    --card-border-tint: 212 187 122;
     --card-foreground: 222.2 47.4% 11.2%;
 
-    --field-card: 40.54 58.73% 87.65%;
-    --field-card-border: 39.11 53.36% 49.61%;
-    --field-card-foreground: 216.32 47.5% 15.69%;
+    --field-card: 43.28 58.73% 87.65%;
+    --field-card-border: 43.28 51.69% 46.27%;
+    --field-card-foreground: 220 44.68% 18.43%;
 
     --widget: 0 0% 97%;
     --widget-foreground: 0 0% 95%;
@@ -29,8 +29,8 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
 
-    --primary: 39.11 53.36% 49.61%;
-    --primary-foreground: 216.32 47.5% 15.69%;
+    --primary: 43.28 51.69% 46.27%;
+    --primary-foreground: 220 44.68% 18.43%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -41,7 +41,7 @@
     --destructive: 0 100% 50%;
     --destructive-foreground: 210 40% 98%;
 
-    --ring: 39.11 53.36% 49.61%;
+    --ring: 43.28 51.69% 46.27%;
 
     --radius: 0.5rem;
 
@@ -153,7 +153,7 @@
 
     --card: 0 0% 14.9%;
     --card-border: 0 0% 27.9%;
-    --card-border-tint: 212 178 122;
+    --card-border-tint: 212 187 122;
     --card-foreground: 0 0% 95%;
 
     --widget: 0 0% 14.9%;
@@ -164,19 +164,19 @@
 
     --field-border: 214.3 31.8% 91.4%;
 
-    --primary: 39.11 53.36% 49.61%;
-    --primary-foreground: 216.32 47.5% 15.69%;
+    --primary: 43.28 51.69% 46.27%;
+    --primary-foreground: 220 44.68% 18.43%;
 
     --secondary: 0 0% 23.4%;
-    --secondary-foreground: 39.23 54.17% 62.35%;
+    --secondary-foreground: 43.28 54.17% 62.35%;
 
     --accent: 0 0% 27.9%;
-    --accent-foreground: 39.23 54.17% 62.35%;
+    --accent-foreground: 43.28 54.17% 62.35%;
 
     --destructive: 0 87% 62%;
     --destructive-foreground: 0 87% 19%;
 
-    --ring: 39.11 53.36% 49.61%;
+    --ring: 43.28 51.69% 46.27%;
 
     --radius: 0.5rem;
 
