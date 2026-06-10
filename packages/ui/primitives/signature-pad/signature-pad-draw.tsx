@@ -58,7 +58,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
   const [currentLine, setCurrentLine] = useState<Point[]>([]);
   const [isSignatureValid, setIsSignatureValid] = useState<boolean | null>(null);
 
-  const [selectedColor, setSelectedColor] = useState('black');
+  const [selectedColor, setSelectedColor] = useState('#15243B');
 
   const perfectFreehandOptions = useMemo(() => {
     const size = $el.current ? Math.min($el.current.height, $el.current.width) * 0.03 : 10;
@@ -265,7 +265,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
         data-testid="signature-pad-draw"
         ref={$el}
         className={cn('h-full w-full', {
-          'dark:hue-rotate-180 dark:invert': selectedColor === 'black',
+          'dark:hue-rotate-180 dark:invert': selectedColor === 'black' || selectedColor === '#15243B',
         })}
         style={{ touchAction: 'none' }}
         onPointerMove={(event) => onMouseMove(event)}
@@ -281,7 +281,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
       <div className="absolute right-3 bottom-3 flex gap-2">
         <button
           type="button"
-          className="rounded-full p-0 text-[0.688rem] text-muted-foreground/60 ring-offset-background hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="rounded-full p-0 text-[0.688rem] text-foreground/80 ring-offset-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           onClick={() => onClearClick()}
         >
           <Trans>Clear Signature</Trans>
@@ -301,7 +301,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
           <button
             type="button"
             title="undo"
-            className="rounded-full p-0 text-[0.688rem] text-muted-foreground/60 ring-offset-background hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-full p-0 text-[0.688rem] text-foreground/80 ring-offset-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={onUndoClick}
           >
             <Undo2 className="h-4 w-4" />

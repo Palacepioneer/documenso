@@ -22,6 +22,13 @@ export const SignaturePadColorPicker = ({
         </SelectTrigger>
 
         <SelectContent className="w-[100px]" align="end">
+          <SelectItem value="#15243B">
+            <div className="flex items-center text-[0.688rem] text-muted-foreground">
+              <div className="mr-1 h-4 w-4 rounded-full border-2 border-border bg-[#15243B] shadow-sm" />
+              <Trans>Navy</Trans>
+            </div>
+          </SelectItem>
+
           <SelectItem value="black">
             <div className="flex items-center text-[0.688rem] text-muted-foreground">
               <div className="mr-1 h-4 w-4 rounded-full border-2 border-border bg-black shadow-sm" />
@@ -40,13 +47,6 @@ export const SignaturePadColorPicker = ({
             <div className="flex items-center text-[0.688rem] text-muted-foreground">
               <div className="mr-1 h-4 w-4 rounded-full border-2 border-border bg-[blue] shadow-sm" />
               <Trans>Blue</Trans>
-            </div>
-          </SelectItem>
-
-          <SelectItem value="green">
-            <div className="flex items-center text-[0.688rem] text-muted-foreground">
-              <div className="mr-1 h-4 w-4 rounded-full border-2 border-border bg-[green] shadow-sm" />
-              <Trans>Green</Trans>
             </div>
           </SelectItem>
         </SelectContent>
