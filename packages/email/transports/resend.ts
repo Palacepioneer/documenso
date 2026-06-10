@@ -102,13 +102,17 @@ export class ResendTransport implements Transport<SentMessageInfo> {
     return [addresses.address];
   }
 
-  public toResendFromAddress(address: Mail.Options['from']) {
+  public toResendFromAddress(address: Mail.Options['from']): string {
     if (!address) {
       return '';
     }
 
     if (typeof address === 'string') {
       return address;
+    }
+
+    if (Array.isArray(address)) {
+      return this.toResendFromAddress(address[0]);
     }
 
     return `${address.name} <${address.address}>`;
