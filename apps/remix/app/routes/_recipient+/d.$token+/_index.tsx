@@ -198,7 +198,16 @@ const DirectSigningPageV1 = ({ data }: { data: Awaited<ReturnType<typeof handleV
         isDirectTemplate={true}
         user={user}
       >
-        {sessionData?.user && <AuthenticatedHeader />}
+        {sessionData?.user ? (
+          <AuthenticatedHeader />
+        ) : (
+          // Anonymous direct-link landing: the recipient layout hides its brand bar
+          // for this route, so render the Jess mark here (operator 2026-06-10:
+          // logo prominent on every signing surface).
+          <header className="mx-auto w-full max-w-screen-xl px-4 pt-6 pb-8 md:px-8">
+            <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-20 w-auto md:h-24" />
+          </header>
+        )}
 
         <div className="mx-auto -mt-4 w-full max-w-screen-xl px-4 md:px-8">
           <h1
