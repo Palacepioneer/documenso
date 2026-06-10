@@ -14,12 +14,18 @@ forked from the upstream tag **v2.11.0**.
   fallback strings rewritten; `meta.subject` is now honored for all
   document-completed emails; the recipient-signed notification carries a
   document link.
+- jessmail.2 increment: page-1 document thumbnail embedded in signing
+  request/reminder emails as an inline CID image (new `emailDocumentThumbnail`
+  email setting, default on; disabled whenever recipient access authentication
+  is required), a "signed by" signature block plus a 7MB attachment guard on
+  the completed email, cache-busting `?v=<hash>` on branding logo URLs, and a
+  local Resend transport that supports inline `cid` images and `replyTo`.
 - No changes to signing logic, storage, auth, or any other subsystem.
 
 ## License & source offer (AGPL-3.0 §13)
 Documenso is licensed under the GNU Affero General Public License v3.0
 (see `LICENSE`). This modified source is published to satisfy AGPL §13: it
-corresponds to the container image `documenso-jess:v2.11.0-jessmail.1`
+corresponds to the container image `documenso-jess:v2.11.0-jessmail.2`
 which, once deployed, serves users at https://sign.jessintelligence.com.
 
 Upstream project: https://github.com/documenso/documenso
