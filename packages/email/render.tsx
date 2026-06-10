@@ -25,7 +25,7 @@ const colors = {
     DEFAULT: JESS_COLORS.navy,
     foreground: JESS_COLORS.cream,
   },
-} as Record<string, string>;
+} as unknown as Record<string, string>;
 
 export const render = async (element: React.ReactNode, options?: RenderOptions) => {
   const { branding, ...otherOptions } = options ?? {};
