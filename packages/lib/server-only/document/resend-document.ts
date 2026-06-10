@@ -144,22 +144,26 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
 
       const recipientActionVerb = i18n._(RECIPIENT_ROLES_DESCRIPTION[recipient.role].actionVerb).toLowerCase();
 
+      // Jess fork: fallback strings rewritten in house voice ({signer.name} /
+      // {document.name} are substituted per-recipient downstream).
       let emailMessage = envelope.documentMeta.message || '';
-      let emailSubject = i18n._(msg`Reminder: Please ${recipientActionVerb} this document`);
+      let emailSubject = i18n._(msg`reminder: "{document.name}" still needs you to ${recipientActionVerb}`);
 
       if (selfSigner) {
         emailMessage = i18n._(
-          msg`You have initiated the document ${`"${envelope.title}"`} that requires you to ${recipientActionVerb} it.`,
+          msg`your document "{document.name}" is still waiting — it just needs you to ${recipientActionVerb} it.`,
         );
-        emailSubject = i18n._(msg`Reminder: Please ${recipientActionVerb} your document`);
+        emailSubject = i18n._(msg`reminder: your document still needs you to ${recipientActionVerb}`);
       }
 
       if (organisationType === OrganisationType.ORGANISATION) {
-        emailSubject = i18n._(msg`Reminder: ${envelope.team.name} invited you to ${recipientActionVerb} a document`);
+        emailSubject = i18n._(
+          msg`reminder: ${envelope.team.name} is still waiting on "{document.name}"`,
+        );
         emailMessage =
           envelope.documentMeta.message ||
           i18n._(
-            msg`${user.name || user.email} on behalf of "${envelope.team.name}" has invited you to ${recipientActionVerb} the document "${envelope.title}".`,
+            msg`hi {signer.name} — just a nudge from ${user.name || user.email}: "{document.name}" still needs you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions.`,
           );
       }
 
@@ -210,7 +214,7 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
         from: senderEmail,
         replyTo: replyToEmail,
         subject: envelope.documentMeta.subject
-          ? renderCustomEmailTemplate(i18n._(msg`Reminder: ${envelope.documentMeta.subject}`), customEmailTemplate)
+          ? renderCustomEmailTemplate(i18n._(msg`reminder: ${envelope.documentMeta.subject}`), customEmailTemplate)
           : emailSubject,
         html,
         text,

@@ -113,10 +113,11 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
 
   const recipientActionVerb = i18n._(RECIPIENT_ROLES_DESCRIPTION[recipient.role].actionVerb).toLowerCase();
 
-  let emailSubject = i18n._(msg`Reminder: Please ${recipientActionVerb} the document "${envelope.title}"`);
+  // Jess fork: fallback subjects in house voice.
+  let emailSubject = i18n._(msg`reminder: "${envelope.title}" still needs you to ${recipientActionVerb}`);
 
   if (organisationType === OrganisationType.ORGANISATION) {
-    emailSubject = i18n._(msg`Reminder: ${envelope.team.name} invited you to ${recipientActionVerb} a document`);
+    emailSubject = i18n._(msg`reminder: ${envelope.team.name} is still waiting on "${envelope.title}"`);
   }
 
   const customEmailTemplate = {
@@ -127,7 +128,7 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
 
   if (envelope.documentMeta.subject) {
     emailSubject = renderCustomEmailTemplate(
-      i18n._(msg`Reminder: ${envelope.documentMeta.subject}`),
+      i18n._(msg`reminder: ${envelope.documentMeta.subject}`),
       customEmailTemplate,
     );
   }

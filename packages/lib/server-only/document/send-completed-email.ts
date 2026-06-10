@@ -117,6 +117,13 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
     isOwnerDocumentCompletedEmailEnabled &&
     (!envelope.recipients.find((recipient) => recipient.email === owner.email) || !isDocumentCompletedEmailEnabled)
   ) {
+    // Jess fork: meta.subject is honored for the owner's completed email too.
+    const ownerEmailTemplate = {
+      'signer.name': owner.name ?? '',
+      'signer.email': owner.email,
+      'document.name': envelope.title,
+    };
+
     const template = createElement(DocumentCompletedEmailTemplate, {
       documentName: envelope.title,
       assetBaseUrl,
@@ -143,7 +150,9 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       ],
       from: senderEmail,
       replyTo: replyToEmail,
-      subject: i18n._(msg`Signing Complete!`),
+      subject: envelope.documentMeta?.subject
+        ? renderCustomEmailTemplate(envelope.documentMeta.subject, ownerEmailTemplate)
+        : i18n._(msg`all signed — "${envelope.title}" is complete`),
       html,
       text,
       attachments: completedDocumentEmailAttachments,
@@ -213,10 +222,11 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         ],
         from: senderEmail,
         replyTo: replyToEmail,
-        subject:
-          isDirectTemplate && envelope.documentMeta?.subject
-            ? renderCustomEmailTemplate(envelope.documentMeta.subject, customEmailTemplate)
-            : i18n._(msg`Signing Complete!`),
+        // Jess fork: meta.subject honored for every completed email (was
+        // direct-template only, leaving recipients with "Signing Complete!").
+        subject: envelope.documentMeta?.subject
+          ? renderCustomEmailTemplate(envelope.documentMeta.subject, customEmailTemplate)
+          : i18n._(msg`all signed — "${envelope.title}" is complete`),
         html,
         text,
         attachments: completedDocumentEmailAttachments,

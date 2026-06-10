@@ -102,7 +102,7 @@ export const run = async ({ payload, io }: { payload: TSendSigningRejectionEmail
         },
         from: senderEmail,
         replyTo: replyToEmail,
-        subject: i18n._(msg`Document "${envelope.title}" - Rejection Confirmed`),
+        subject: i18n._(msg`you declined "${envelope.title}"`),
         html,
         text,
       });
@@ -134,7 +134,7 @@ export const run = async ({ payload, io }: { payload: TSendSigningRejectionEmail
         address: documentOwner.email,
       },
       from: DOCUMENSO_INTERNAL_EMAIL, // Purposefully using internal email here.
-      subject: i18n._(msg`Document "${envelope.title}" - Rejected by ${recipient.name}`),
+      subject: i18n._(msg`${recipient.name} declined "${envelope.title}"`),
       html,
       text,
     });

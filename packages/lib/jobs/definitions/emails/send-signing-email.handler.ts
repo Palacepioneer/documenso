@@ -104,34 +104,34 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
 
   const recipientActionVerb = i18n._(RECIPIENT_ROLES_DESCRIPTION[recipient.role].actionVerb).toLowerCase();
 
+  // Jess fork: fallback strings rewritten in house voice. `{signer.name}` and
+  // `{document.name}` are substituted per-recipient via renderCustomEmailTemplate.
   let emailMessage = customEmail?.message || '';
-  let emailSubject = i18n._(msg`Please ${recipientActionVerb} this document`);
+  let emailSubject = i18n._(msg`{document.name} is ready for you to ${recipientActionVerb}`);
 
   if (selfSigner) {
     emailMessage = i18n._(
-      msg`You have initiated the document ${`"${envelope.title}"`} that requires you to ${recipientActionVerb} it.`,
+      msg`your document "{document.name}" is ready — it just needs you to ${recipientActionVerb} it.`,
     );
-    emailSubject = i18n._(msg`Please ${recipientActionVerb} your document`);
+    emailSubject = i18n._(msg`your document is ready to ${recipientActionVerb}`);
   }
 
   if (isDirectTemplate) {
     emailMessage = i18n._(
-      msg`A document was created by your direct template that requires you to ${recipientActionVerb} it.`,
+      msg`a document was created from your direct template and needs you to ${recipientActionVerb} it.`,
     );
-    emailSubject = i18n._(msg`Please ${recipientActionVerb} this document created by your direct template`);
+    emailSubject = i18n._(msg`{document.name} — created from your direct template`);
   }
 
   if (organisationType === OrganisationType.ORGANISATION) {
-    emailSubject = i18n._(msg`${team.name} invited you to ${recipientActionVerb} a document`);
+    emailSubject = i18n._(msg`${team.name} sent you "{document.name}" to ${recipientActionVerb}`);
     emailMessage = customEmail?.message ?? '';
 
     if (!emailMessage) {
       const inviterName = user.name || '';
 
       emailMessage = i18n._(
-        settings.includeSenderDetails
-          ? msg`${inviterName} on behalf of "${team.name}" has invited you to ${recipientActionVerb} the document "${envelope.title}".`
-          : msg`${team.name} has invited you to ${recipientActionVerb} the document "${envelope.title}".`,
+        msg`hi {signer.name} — ${inviterName} sent over "{document.name}" for you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions. — ${inviterName}`,
       );
     }
   }

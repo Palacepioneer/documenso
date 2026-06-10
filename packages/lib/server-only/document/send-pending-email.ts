@@ -96,7 +96,7 @@ export const sendPendingEmail = async ({ id, recipientId }: SendPendingEmailOpti
     },
     from: senderEmail,
     replyTo: replyToEmail,
-    subject: i18n._(msg`Waiting for others to complete signing.`),
+    subject: i18n._(msg`you're done — "${envelope.title}" is waiting on others`),
     html,
     text,
   });

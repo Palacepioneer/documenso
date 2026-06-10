@@ -10,6 +10,7 @@ import { NEXT_PUBLIC_WEBAPP_URL } from '../../../constants/app';
 import { getEmailContext } from '../../../server-only/email/get-email-context';
 import { extractDerivedDocumentEmailSettings } from '../../../types/document-email';
 import { unsafeBuildEnvelopeIdQuery } from '../../../utils/envelope';
+import { formatDocumentsPath } from '../../../utils/teams';
 import { isRecipientEmailValidForSending } from '../../../utils/recipients';
 import { renderEmailWithI18N } from '../../../utils/render-email-with-i18n';
 import type { JobRunIO } from '../../client/_internal/job';
@@ -44,6 +45,11 @@ export const run = async ({ payload, io }: { payload: TSendRecipientSignedEmailJ
           id: true,
           email: true,
           name: true,
+        },
+      },
+      team: {
+        select: {
+          url: true,
         },
       },
       documentMeta: true,
@@ -88,11 +94,15 @@ export const run = async ({ payload, io }: { payload: TSendRecipientSignedEmailJ
 
   const i18n = await getI18nInstance(emailLanguage);
 
+  // Jess fork: give the owner a CTA into the document (the upstream email had none).
+  const documentLink = `${NEXT_PUBLIC_WEBAPP_URL()}${formatDocumentsPath(envelope.team?.url)}/${envelope.id}`;
+
   const template = createElement(DocumentRecipientSignedEmailTemplate, {
     documentName: envelope.title,
     recipientName,
     recipientEmail,
     assetBaseUrl,
+    documentLink,
   });
 
   await io.runTask('send-recipient-signed-email', async () => {
@@ -111,7 +121,7 @@ export const run = async ({ payload, io }: { payload: TSendRecipientSignedEmailJ
         address: owner.email,
       },
       from: senderEmail,
-      subject: i18n._(msg`${recipientReference} has signed "${envelope.title}"`),
+      subject: i18n._(msg`${recipientReference} signed "${envelope.title}"`),
       html,
       text,
     });

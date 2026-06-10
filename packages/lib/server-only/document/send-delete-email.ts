@@ -82,7 +82,7 @@ export const sendDeleteEmail = async ({ envelopeId, reason }: SendDeleteEmailOpt
       name: name || '',
     },
     from: senderEmail,
-    subject: i18n._(msg`Document Deleted!`),
+    subject: i18n._(msg`"${envelope.title}" was removed`),
     html,
     text,
   });
