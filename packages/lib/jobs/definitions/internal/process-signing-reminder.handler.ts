@@ -17,9 +17,7 @@ import { getI18nInstance } from '../../../client-only/providers/i18n-server';
 import { NEXT_PUBLIC_WEBAPP_URL } from '../../../constants/app';
 import { RECIPIENT_ROLES_DESCRIPTION } from '../../../constants/recipient-roles';
 import {
-  EMAIL_DOCUMENT_THUMBNAIL_CID,
-  emailDocumentThumbnailAttachment,
-  getEmailDocumentThumbnail,
+  getEmailDocumentThumbnailUrl,
   isEmailThumbnailAllowedForRecipient,
 } from '../../../server-only/document/get-email-document-thumbnail';
 import { getEmailContext } from '../../../server-only/email/get-email-context';
@@ -128,11 +126,11 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
 
   const recipientActionVerb = i18n._(RECIPIENT_ROLES_DESCRIPTION[recipient.role].actionVerb).toLowerCase();
 
-  // Jess fork: fallback subjects in house voice.
-  let emailSubject = i18n._(msg`reminder: "${envelope.title}" still needs you to ${recipientActionVerb}`);
+  // Jess fork: fallback subjects in house voice (first person, capitalized).
+  let emailSubject = i18n._(msg`Quick reminder — "${envelope.title}" still needs you to ${recipientActionVerb}`);
 
   if (organisationType === OrganisationType.ORGANISATION) {
-    emailSubject = i18n._(msg`reminder: ${envelope.team.name} is still waiting on "${envelope.title}"`);
+    emailSubject = i18n._(msg`Quick reminder — I'm still waiting on "${envelope.title}"`);
   }
 
   const customEmailTemplate = {
@@ -143,7 +141,7 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
 
   if (envelope.documentMeta.subject) {
     emailSubject = renderCustomEmailTemplate(
-      i18n._(msg`reminder: ${envelope.documentMeta.subject}`),
+      i18n._(msg`Reminder: ${envelope.documentMeta.subject}`),
       customEmailTemplate,
     );
   }
@@ -159,10 +157,12 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
     `Sending signing reminder for envelope ${envelope.id} to recipient ${recipient.id} (${recipient.email})`,
   );
 
-  // Jess fork: page-1 preview of the actual document as the email hero.
-  // Gated per recipient — never rendered when access auth is required.
-  const documentThumbnail = isEmailThumbnailAllowedForRecipient({ envelope, recipient })
-    ? await getEmailDocumentThumbnail({ envelope })
+  // Jess fork: page-1 preview of the actual document as the email hero,
+  // referenced as an HMAC-signed https URL (CID inline attachments were
+  // dropped between Resend and Gmail). Gated per recipient — never rendered
+  // when access auth is required.
+  const documentThumbnailUrl = isEmailThumbnailAllowedForRecipient({ envelope, recipient })
+    ? getEmailDocumentThumbnailUrl({ envelope })
     : null;
 
   const template = createElement(DocumentReminderEmailTemplate, {
@@ -172,7 +172,7 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
     signDocumentLink,
     customBody: emailMessage,
     role: recipient.role,
-    documentThumbnailSrc: documentThumbnail ? `cid:${EMAIL_DOCUMENT_THUMBNAIL_CID}` : undefined,
+    documentThumbnailSrc: documentThumbnailUrl ?? undefined,
   });
 
   const [html, text] = await Promise.all([
@@ -194,7 +194,6 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
     subject: emailSubject,
     html,
     text,
-    attachments: documentThumbnail ? [emailDocumentThumbnailAttachment(documentThumbnail)] : undefined,
   });
 
   await prisma.documentAuditLog.create({

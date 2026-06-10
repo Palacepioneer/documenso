@@ -15,18 +15,26 @@ forked from the upstream tag **v2.11.0**.
   document-completed emails; the recipient-signed notification carries a
   document link.
 - jessmail.2 increment: page-1 document thumbnail embedded in signing
-  request/reminder emails as an inline CID image (new `emailDocumentThumbnail`
-  email setting, default on; disabled whenever recipient access authentication
-  is required), a "signed by" signature block plus a 7MB attachment guard on
-  the completed email, cache-busting `?v=<hash>` on branding logo URLs, and a
-  local Resend transport that supports inline `cid` images and `replyTo`.
+  request/reminder emails (new `emailDocumentThumbnail` email setting, default
+  on; disabled whenever recipient access authentication is required), a
+  "signed by" signature block plus a 7MB attachment guard on the completed
+  email, cache-busting `?v=<hash>` on branding logo URLs, and a local Resend
+  transport that supports inline `cid` images and `replyTo`.
+- jessmail.3 increment: all structural email copy rewritten to first person
+  (the sender speaks as "I") with sentence capitalization; header logo
+  rendered at 3rem; document thumbnails and signature images switched from
+  inline CID attachments to HMAC-signed expiring `https` URLs served by two
+  new routes (`apps/remix/app/routes/api+/email.thumbnail.$envelopeId.ts`,
+  `apps/remix/app/routes/api+/email.signature.$signatureId.ts`, helper in
+  `packages/lib/server-only/email/email-asset-token.ts`) — inline CID images
+  were not rendered by Gmail when sent through the Resend API.
 - No changes to signing logic, storage, auth, or any other subsystem.
 
 ## License & source offer (AGPL-3.0 §13)
 Documenso is licensed under the GNU Affero General Public License v3.0
 (see `LICENSE`). This modified source is published to satisfy AGPL §13: it
-corresponds to the container image `documenso-jess:v2.11.0-jessmail.2`
-which, once deployed, serves users at https://sign.jessintelligence.com.
+corresponds to the container image `documenso-jess:v2.11.0-jessmail.3`
+which serves users at https://sign.jessintelligence.com.
 
 Upstream project: https://github.com/documenso/documenso
 Upstream base: tag `v2.11.0`

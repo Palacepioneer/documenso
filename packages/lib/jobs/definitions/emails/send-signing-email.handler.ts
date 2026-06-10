@@ -17,9 +17,7 @@ import { getI18nInstance } from '../../../client-only/providers/i18n-server';
 import { NEXT_PUBLIC_WEBAPP_URL } from '../../../constants/app';
 import { RECIPIENT_ROLE_TO_EMAIL_TYPE, RECIPIENT_ROLES_DESCRIPTION } from '../../../constants/recipient-roles';
 import {
-  EMAIL_DOCUMENT_THUMBNAIL_CID,
-  emailDocumentThumbnailAttachment,
-  getEmailDocumentThumbnail,
+  getEmailDocumentThumbnailUrl,
   isEmailThumbnailAllowedForRecipient,
 } from '../../../server-only/document/get-email-document-thumbnail';
 import { getEmailContext } from '../../../server-only/email/get-email-context';
@@ -126,31 +124,31 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
   const signerNameVar = '{signer.name}';
 
   let emailMessage = customEmail?.message || '';
-  let emailSubject = i18n._(msg`${documentNameVar} is ready for you to ${recipientActionVerb}`);
+  let emailSubject = i18n._(msg`I need you to ${recipientActionVerb} "${documentNameVar}"`);
 
   if (selfSigner) {
     emailMessage = i18n._(
-      msg`your document "${documentNameVar}" is ready — it just needs you to ${recipientActionVerb} it.`,
+      msg`Your document "${documentNameVar}" is ready — it just needs you to ${recipientActionVerb} it.`,
     );
-    emailSubject = i18n._(msg`your document is ready to ${recipientActionVerb}`);
+    emailSubject = i18n._(msg`Your document is ready to ${recipientActionVerb}`);
   }
 
   if (isDirectTemplate) {
     emailMessage = i18n._(
-      msg`a document was created from your direct template and needs you to ${recipientActionVerb} it.`,
+      msg`A document was created from your direct template and needs you to ${recipientActionVerb} it.`,
     );
     emailSubject = i18n._(msg`${documentNameVar} — created from your direct template`);
   }
 
   if (organisationType === OrganisationType.ORGANISATION) {
-    emailSubject = i18n._(msg`${team.name} sent you "${documentNameVar}" to ${recipientActionVerb}`);
+    emailSubject = i18n._(msg`I need you to ${recipientActionVerb} "${documentNameVar}"`);
     emailMessage = customEmail?.message ?? '';
 
     if (!emailMessage) {
       const inviterName = user.name || '';
 
       emailMessage = i18n._(
-        msg`hi ${signerNameVar} — ${inviterName} sent over "${documentNameVar}" for you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions. — ${inviterName}`,
+        msg`Hi ${signerNameVar} — I've sent over "${documentNameVar}" for you to ${recipientActionVerb}. It takes about a minute, and you can reply to this email with any questions. — ${inviterName}`,
       );
     }
   }
@@ -164,11 +162,13 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
   const signDocumentLink = `${NEXT_PUBLIC_WEBAPP_URL()}/sign/${recipient.token}`;
 
-  // Jess fork: page-1 preview of the actual document as the email hero.
-  // Gated per recipient — never rendered when access auth is required.
-  const documentThumbnail =
+  // Jess fork: page-1 preview of the actual document as the email hero,
+  // referenced as an HMAC-signed https URL (CID inline attachments were
+  // dropped between Resend and Gmail). Gated per recipient — never rendered
+  // when access auth is required.
+  const documentThumbnailUrl =
     isRecipientEmailValidForSending(recipient) && isEmailThumbnailAllowedForRecipient({ envelope, recipient })
-      ? await getEmailDocumentThumbnail({ envelope })
+      ? getEmailDocumentThumbnailUrl({ envelope })
       : null;
 
   const template = createElement(DocumentInviteEmailTemplate, {
@@ -185,7 +185,7 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
     teamName: team?.name,
     teamEmail: team?.teamEmail?.email,
     includeSenderDetails: settings.includeSenderDetails,
-    documentThumbnailSrc: documentThumbnail ? `cid:${EMAIL_DOCUMENT_THUMBNAIL_CID}` : undefined,
+    documentThumbnailSrc: documentThumbnailUrl ?? undefined,
   });
 
   if (isRecipientEmailValidForSending(recipient)) {
@@ -209,7 +209,6 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
         subject: renderCustomEmailTemplate(documentMeta?.subject || emailSubject, customEmailTemplate),
         html,
         text,
-        attachments: documentThumbnail ? [emailDocumentThumbnailAttachment(documentThumbnail)] : undefined,
       });
     });
   }

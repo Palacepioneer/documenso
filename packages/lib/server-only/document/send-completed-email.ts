@@ -18,6 +18,10 @@ import { isRecipientEmailValidForSending } from '../../utils/recipients';
 import { renderCustomEmailTemplate } from '../../utils/render-custom-email-template';
 import { renderEmailWithI18N } from '../../utils/render-email-with-i18n';
 import { formatDocumentsPath } from '../../utils/teams';
+import {
+  EMAIL_SIGNATURE_TOKEN_TTL_MS,
+  createEmailAssetUrl,
+} from '../email/email-asset-token';
 import { getEmailContext } from '../email/get-email-context';
 
 export interface SendDocumentOptions {
@@ -121,19 +125,10 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
   }
 
   // Jess fork: "signed by" ceremony block — each signer's actual signature.
-  // Drawn signatures travel as small inline CID images (Gmail strips data
-  // URIs); typed signatures render as text in the template.
-  const signatureCidFor = (recipientId: number) => `jess-signature-${recipientId}`;
-
-  const dataUriToImage = (dataUri: string) => {
-    const match = dataUri.match(/^data:(image\/[a-z+.-]+);base64,(.*)$/i);
-
-    if (!match) {
-      return null;
-    }
-
-    return { contentType: match[1], content: Buffer.from(match[2], 'base64') };
-  };
+  // Drawn signatures are referenced as HMAC-signed https URLs (CID inline
+  // attachments were dropped between Resend and Gmail; Gmail also strips
+  // data URIs); typed signatures render as text in the template.
+  const isImageDataUri = (dataUri: string) => /^data:image\/[a-z+.-]+;base64,./i.test(dataUri);
 
   const documentSigners = envelope.recipients
     .filter((recipient) => recipient.signingStatus === SigningStatus.SIGNED)
@@ -146,41 +141,29 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         return [];
       }
 
-      const drawnImage = signature.signatureImageAsBase64 ? dataUriToImage(signature.signatureImageAsBase64) : null;
+      const signatureImageUrl =
+        signature.signatureImageAsBase64 && isImageDataUri(signature.signatureImageAsBase64)
+          ? createEmailAssetUrl({
+              path: `/api/email/signature/${signature.id}`,
+              purpose: 'signature-image',
+              assetId: String(signature.id),
+              ttlMs: EMAIL_SIGNATURE_TOKEN_TTL_MS,
+            })
+          : null;
 
       return [
         {
-          recipientId: recipient.id,
           name: recipient.name,
           email: recipient.email,
-          drawnImage,
+          signatureImageSrc: signatureImageUrl ?? undefined,
           typedSignature: signature.typedSignature ?? undefined,
         },
       ];
     });
 
-  const signatureAttachments = documentSigners.flatMap((signer) =>
-    signer.drawnImage
-      ? [
-          {
-            filename: `signature-${signer.recipientId}.png`,
-            content: signer.drawnImage.content,
-            contentType: signer.drawnImage.contentType,
-            cid: signatureCidFor(signer.recipientId),
-            contentDisposition: 'inline' as const,
-          },
-        ]
-      : [],
-  );
+  const completedEmailSigners = documentSigners;
 
-  const completedEmailSigners = documentSigners.map((signer) => ({
-    name: signer.name,
-    email: signer.email,
-    signatureImageSrc: signer.drawnImage ? `cid:${signatureCidFor(signer.recipientId)}` : undefined,
-    typedSignature: signer.typedSignature,
-  }));
-
-  const completedEmailAttachments = [...completedDocumentEmailAttachments, ...signatureAttachments];
+  const completedEmailAttachments = completedDocumentEmailAttachments;
 
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
 
@@ -242,7 +225,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       replyTo: replyToEmail,
       subject: envelope.documentMeta?.subject
         ? renderCustomEmailTemplate(envelope.documentMeta.subject, ownerEmailTemplate)
-        : i18n._(msg`all signed — "${envelope.title}" is complete`),
+        : i18n._(msg`All signed — "${envelope.title}" is complete`),
       html,
       text,
       attachments: completedEmailAttachments,
@@ -318,7 +301,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         // direct-template only, leaving recipients with "Signing Complete!").
         subject: envelope.documentMeta?.subject
           ? renderCustomEmailTemplate(envelope.documentMeta.subject, customEmailTemplate)
-          : i18n._(msg`all signed — "${envelope.title}" is complete`),
+          : i18n._(msg`All signed — "${envelope.title}" is complete`),
         html,
         text,
         attachments: completedEmailAttachments,

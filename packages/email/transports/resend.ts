@@ -144,7 +144,15 @@ export class ResendTransport implements Transport<SentMessageInfo> {
 
       return {
         filename: attachment.filename,
-        content,
+        // Resend's documented content forms are Buffer or base64 string —
+        // encode explicitly rather than letting JSON.stringify serialize the
+        // Buffer into `{"type":"Buffer","data":[...]}`. (Verified 2026-06-10:
+        // Resend's API does tolerate the Buffer-JSON form — the 06:47 send's
+        // attachment arrived at Resend as a valid PNG with the right
+        // content_id — but base64 is the spec-safe encoding. The inline-image
+        // loss happened downstream, between Resend and Gmail, which is why
+        // emails now reference images by https URL instead of cid.)
+        content: content.toString('base64'),
         contentType: attachment.contentType,
         // Inline images: nodemailer `cid` -> Resend `contentId` so `cid:`
         // references in the HTML resolve.

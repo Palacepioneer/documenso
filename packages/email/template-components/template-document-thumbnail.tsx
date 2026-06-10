@@ -1,7 +1,7 @@
 import { Img, Link, Section } from '../components';
 
 export interface TemplateDocumentThumbnailProps {
-  /** Image source — `cid:` reference in real sends, data URI in previews. */
+  /** Image source — HMAC-signed https URL in real sends, data URI in previews. */
   src: string;
   /** Accessible name, usually the document display name. */
   alt: string;

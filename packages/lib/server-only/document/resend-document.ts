@@ -30,9 +30,7 @@ import { getEmailContext } from '../email/get-email-context';
 import { getEnvelopeWhereInput } from '../envelope/get-envelope-by-id';
 import { triggerWebhook } from '../webhooks/trigger/trigger-webhook';
 import {
-  EMAIL_DOCUMENT_THUMBNAIL_CID,
-  emailDocumentThumbnailAttachment,
-  getEmailDocumentThumbnail,
+  getEmailDocumentThumbnailUrl,
   isEmailThumbnailAllowedForRecipient,
 } from './get-email-document-thumbnail';
 
@@ -144,10 +142,11 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
     meta: envelope.documentMeta,
   });
 
-  // Jess fork: page-1 preview of the actual document, rendered once and
-  // reused for every reminded recipient. Per-recipient access-auth gating
-  // happens below.
-  const documentThumbnail = await getEmailDocumentThumbnail({ envelope });
+  // Jess fork: page-1 preview of the actual document as an HMAC-signed https
+  // URL (CID inline attachments were dropped between Resend and Gmail),
+  // minted once and reused for every reminded recipient. Per-recipient
+  // access-auth gating happens below.
+  const documentThumbnailUrl = getEmailDocumentThumbnailUrl({ envelope });
 
   await Promise.all(
     recipientsToRemind.map(async (recipient) => {
@@ -172,24 +171,24 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
 
       let emailMessage = envelope.documentMeta.message || '';
       let emailSubject = i18n._(
-        msg`reminder: "${documentNameVar}" still needs you to ${recipientActionVerb}`,
+        msg`Quick reminder — "${documentNameVar}" still needs you to ${recipientActionVerb}`,
       );
 
       if (selfSigner) {
         emailMessage = i18n._(
-          msg`your document "${documentNameVar}" is still waiting — it just needs you to ${recipientActionVerb} it.`,
+          msg`Your document "${documentNameVar}" is still waiting — it just needs you to ${recipientActionVerb} it.`,
         );
-        emailSubject = i18n._(msg`reminder: your document still needs you to ${recipientActionVerb}`);
+        emailSubject = i18n._(msg`Reminder: your document still needs you to ${recipientActionVerb}`);
       }
 
       if (organisationType === OrganisationType.ORGANISATION) {
         emailSubject = i18n._(
-          msg`reminder: ${envelope.team.name} is still waiting on "${documentNameVar}"`,
+          msg`Quick reminder — I'm still waiting on "${documentNameVar}"`,
         );
         emailMessage =
           envelope.documentMeta.message ||
           i18n._(
-            msg`hi ${signerNameVar} — just a nudge from ${user.name || user.email}: "${documentNameVar}" still needs you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions.`,
+            msg`Hi ${signerNameVar} — just a nudge: I'm still waiting on you to ${recipientActionVerb} "${documentNameVar}". It takes about a minute, and you can reply to this email with any questions.`,
           );
       }
 
@@ -202,8 +201,10 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
       const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
       const signDocumentLink = `${NEXT_PUBLIC_WEBAPP_URL()}/sign/${recipient.token}`;
 
-      const recipientThumbnail =
-        documentThumbnail && isEmailThumbnailAllowedForRecipient({ envelope, recipient }) ? documentThumbnail : null;
+      const recipientThumbnailUrl =
+        documentThumbnailUrl && isEmailThumbnailAllowedForRecipient({ envelope, recipient })
+          ? documentThumbnailUrl
+          : null;
 
       const template = createElement(DocumentInviteEmailTemplate, {
         documentName: envelope.title,
@@ -219,7 +220,7 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
         selfSigner,
         organisationType,
         teamName: envelope.team?.name,
-        documentThumbnailSrc: recipientThumbnail ? `cid:${EMAIL_DOCUMENT_THUMBNAIL_CID}` : undefined,
+        documentThumbnailSrc: recipientThumbnailUrl ?? undefined,
       });
 
       const [html, text] = await Promise.all([
@@ -244,11 +245,10 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
         from: senderEmail,
         replyTo: replyToEmail,
         subject: envelope.documentMeta.subject
-          ? renderCustomEmailTemplate(i18n._(msg`reminder: ${envelope.documentMeta.subject}`), customEmailTemplate)
+          ? renderCustomEmailTemplate(i18n._(msg`Reminder: ${envelope.documentMeta.subject}`), customEmailTemplate)
           : emailSubject,
         html,
         text,
-        attachments: recipientThumbnail ? [emailDocumentThumbnailAttachment(recipientThumbnail)] : undefined,
       });
 
       await prisma.documentAuditLog.create({
