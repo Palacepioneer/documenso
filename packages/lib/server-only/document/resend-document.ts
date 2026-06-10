@@ -144,26 +144,32 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
 
       const recipientActionVerb = i18n._(RECIPIENT_ROLES_DESCRIPTION[recipient.role].actionVerb).toLowerCase();
 
-      // Jess fork: fallback strings rewritten in house voice ({signer.name} /
-      // {document.name} are substituted per-recipient downstream).
+      // Jess fork: fallback strings rewritten in house voice. The tokens are
+      // passed as interpolations (literal braces are invalid ICU syntax) and
+      // substituted per-recipient downstream.
+      const documentNameVar = '{document.name}';
+      const signerNameVar = '{signer.name}';
+
       let emailMessage = envelope.documentMeta.message || '';
-      let emailSubject = i18n._(msg`reminder: "{document.name}" still needs you to ${recipientActionVerb}`);
+      let emailSubject = i18n._(
+        msg`reminder: "${documentNameVar}" still needs you to ${recipientActionVerb}`,
+      );
 
       if (selfSigner) {
         emailMessage = i18n._(
-          msg`your document "{document.name}" is still waiting — it just needs you to ${recipientActionVerb} it.`,
+          msg`your document "${documentNameVar}" is still waiting — it just needs you to ${recipientActionVerb} it.`,
         );
         emailSubject = i18n._(msg`reminder: your document still needs you to ${recipientActionVerb}`);
       }
 
       if (organisationType === OrganisationType.ORGANISATION) {
         emailSubject = i18n._(
-          msg`reminder: ${envelope.team.name} is still waiting on "{document.name}"`,
+          msg`reminder: ${envelope.team.name} is still waiting on "${documentNameVar}"`,
         );
         emailMessage =
           envelope.documentMeta.message ||
           i18n._(
-            msg`hi {signer.name} — just a nudge from ${user.name || user.email}: "{document.name}" still needs you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions.`,
+            msg`hi ${signerNameVar} — just a nudge from ${user.name || user.email}: "${documentNameVar}" still needs you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions.`,
           );
       }
 

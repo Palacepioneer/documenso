@@ -104,14 +104,18 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
 
   const recipientActionVerb = i18n._(RECIPIENT_ROLES_DESCRIPTION[recipient.role].actionVerb).toLowerCase();
 
-  // Jess fork: fallback strings rewritten in house voice. `{signer.name}` and
-  // `{document.name}` are substituted per-recipient via renderCustomEmailTemplate.
+  // Jess fork: fallback strings rewritten in house voice. The tokens are passed
+  // as interpolations (literal braces are invalid ICU syntax) and substituted
+  // per-recipient via renderCustomEmailTemplate.
+  const documentNameVar = '{document.name}';
+  const signerNameVar = '{signer.name}';
+
   let emailMessage = customEmail?.message || '';
-  let emailSubject = i18n._(msg`{document.name} is ready for you to ${recipientActionVerb}`);
+  let emailSubject = i18n._(msg`${documentNameVar} is ready for you to ${recipientActionVerb}`);
 
   if (selfSigner) {
     emailMessage = i18n._(
-      msg`your document "{document.name}" is ready — it just needs you to ${recipientActionVerb} it.`,
+      msg`your document "${documentNameVar}" is ready — it just needs you to ${recipientActionVerb} it.`,
     );
     emailSubject = i18n._(msg`your document is ready to ${recipientActionVerb}`);
   }
@@ -120,18 +124,18 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
     emailMessage = i18n._(
       msg`a document was created from your direct template and needs you to ${recipientActionVerb} it.`,
     );
-    emailSubject = i18n._(msg`{document.name} — created from your direct template`);
+    emailSubject = i18n._(msg`${documentNameVar} — created from your direct template`);
   }
 
   if (organisationType === OrganisationType.ORGANISATION) {
-    emailSubject = i18n._(msg`${team.name} sent you "{document.name}" to ${recipientActionVerb}`);
+    emailSubject = i18n._(msg`${team.name} sent you "${documentNameVar}" to ${recipientActionVerb}`);
     emailMessage = customEmail?.message ?? '';
 
     if (!emailMessage) {
       const inviterName = user.name || '';
 
       emailMessage = i18n._(
-        msg`hi {signer.name} — ${inviterName} sent over "{document.name}" for you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions. — ${inviterName}`,
+        msg`hi ${signerNameVar} — ${inviterName} sent over "${documentNameVar}" for you to ${recipientActionVerb}. it takes about a minute, and you can reply to this email with any questions. — ${inviterName}`,
       );
     }
   }
