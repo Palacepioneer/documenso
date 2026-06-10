@@ -16,6 +16,12 @@ import { createElement } from 'react';
 import { getI18nInstance } from '../../../client-only/providers/i18n-server';
 import { NEXT_PUBLIC_WEBAPP_URL } from '../../../constants/app';
 import { RECIPIENT_ROLE_TO_EMAIL_TYPE, RECIPIENT_ROLES_DESCRIPTION } from '../../../constants/recipient-roles';
+import {
+  EMAIL_DOCUMENT_THUMBNAIL_CID,
+  emailDocumentThumbnailAttachment,
+  getEmailDocumentThumbnail,
+  isEmailThumbnailAllowedForRecipient,
+} from '../../../server-only/document/get-email-document-thumbnail';
 import { getEmailContext } from '../../../server-only/email/get-email-context';
 import { updateRecipientNextReminder } from '../../../server-only/recipient/update-recipient-next-reminder';
 import { DOCUMENT_AUDIT_LOG_TYPE } from '../../../types/document-audit-logs';
@@ -54,6 +60,15 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
       },
       include: {
         documentMeta: true,
+        envelopeItems: {
+          include: {
+            documentData: true,
+          },
+          orderBy: {
+            order: 'asc',
+          },
+          take: 1,
+        },
         team: {
           select: {
             teamEmail: true,
@@ -149,6 +164,13 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
   const signDocumentLink = `${NEXT_PUBLIC_WEBAPP_URL()}/sign/${recipient.token}`;
 
+  // Jess fork: page-1 preview of the actual document as the email hero.
+  // Gated per recipient — never rendered when access auth is required.
+  const documentThumbnail =
+    isRecipientEmailValidForSending(recipient) && isEmailThumbnailAllowedForRecipient({ envelope, recipient })
+      ? await getEmailDocumentThumbnail({ envelope })
+      : null;
+
   const template = createElement(DocumentInviteEmailTemplate, {
     documentName: envelope.title,
     inviterName: user.name || undefined,
@@ -163,6 +185,7 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
     teamName: team?.name,
     teamEmail: team?.teamEmail?.email,
     includeSenderDetails: settings.includeSenderDetails,
+    documentThumbnailSrc: documentThumbnail ? `cid:${EMAIL_DOCUMENT_THUMBNAIL_CID}` : undefined,
   });
 
   if (isRecipientEmailValidForSending(recipient)) {
@@ -186,6 +209,7 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
         subject: renderCustomEmailTemplate(documentMeta?.subject || emailSubject, customEmailTemplate),
         html,
         text,
+        attachments: documentThumbnail ? [emailDocumentThumbnailAttachment(documentThumbnail)] : undefined,
       });
     });
   }

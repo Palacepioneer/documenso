@@ -30,6 +30,7 @@ export const DocumentInviteEmailTemplate = ({
   teamName = '',
   includeSenderDetails,
   organisationType,
+  documentThumbnailSrc,
 }: DocumentInviteEmailTemplateProps) => {
   const { _ } = useLingui();
 
@@ -61,6 +62,7 @@ export const DocumentInviteEmailTemplate = ({
         teamName={teamName}
         includeSenderDetails={includeSenderDetails}
         customBody={customBody}
+        documentThumbnailSrc={documentThumbnailSrc}
       />
     </TemplateEmailShell>
   );

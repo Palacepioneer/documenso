@@ -16,6 +16,12 @@ import { createElement } from 'react';
 import { getI18nInstance } from '../../../client-only/providers/i18n-server';
 import { NEXT_PUBLIC_WEBAPP_URL } from '../../../constants/app';
 import { RECIPIENT_ROLES_DESCRIPTION } from '../../../constants/recipient-roles';
+import {
+  EMAIL_DOCUMENT_THUMBNAIL_CID,
+  emailDocumentThumbnailAttachment,
+  getEmailDocumentThumbnail,
+  isEmailThumbnailAllowedForRecipient,
+} from '../../../server-only/document/get-email-document-thumbnail';
 import { getEmailContext } from '../../../server-only/email/get-email-context';
 import { updateRecipientNextReminder } from '../../../server-only/recipient/update-recipient-next-reminder';
 import { triggerWebhook } from '../../../server-only/webhooks/trigger/trigger-webhook';
@@ -67,6 +73,15 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
           documentMeta: true,
           user: true,
           recipients: true,
+          envelopeItems: {
+            include: {
+              documentData: true,
+            },
+            orderBy: {
+              order: 'asc',
+            },
+            take: 1,
+          },
           team: {
             select: {
               name: true,
@@ -144,6 +159,12 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
     `Sending signing reminder for envelope ${envelope.id} to recipient ${recipient.id} (${recipient.email})`,
   );
 
+  // Jess fork: page-1 preview of the actual document as the email hero.
+  // Gated per recipient — never rendered when access auth is required.
+  const documentThumbnail = isEmailThumbnailAllowedForRecipient({ envelope, recipient })
+    ? await getEmailDocumentThumbnail({ envelope })
+    : null;
+
   const template = createElement(DocumentReminderEmailTemplate, {
     recipientName: recipient.name,
     documentName: envelope.title,
@@ -151,6 +172,7 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
     signDocumentLink,
     customBody: emailMessage,
     role: recipient.role,
+    documentThumbnailSrc: documentThumbnail ? `cid:${EMAIL_DOCUMENT_THUMBNAIL_CID}` : undefined,
   });
 
   const [html, text] = await Promise.all([
@@ -172,6 +194,7 @@ export const run = async ({ payload, io }: { payload: TProcessSigningReminderJob
     subject: emailSubject,
     html,
     text,
+    attachments: documentThumbnail ? [emailDocumentThumbnailAttachment(documentThumbnail)] : undefined,
   });
 
   await prisma.documentAuditLog.create({

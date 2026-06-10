@@ -341,6 +341,45 @@ export const DocumentEmailCheckboxes = ({ value, onChange, className }: Document
           </Tooltip>
         </label>
       </div>
+
+      <div className="flex flex-row items-center">
+        <Checkbox
+          id={DocumentEmailEvents.EmailDocumentThumbnail}
+          className="h-5 w-5"
+          checked={value.emailDocumentThumbnail}
+          onCheckedChange={(checked) =>
+            onChange({ ...value, [DocumentEmailEvents.EmailDocumentThumbnail]: Boolean(checked) })
+          }
+        />
+
+        <label
+          className="ml-2 flex flex-row items-center text-muted-foreground text-sm"
+          htmlFor={DocumentEmailEvents.EmailDocumentThumbnail}
+        >
+          <Trans>Show a document preview inside signing emails</Trans>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <InfoIcon className="mx-2 h-4 w-4" />
+            </TooltipTrigger>
+
+            <TooltipContent className="max-w-md space-y-2 p-4 text-foreground">
+              <h2>
+                <strong>
+                  <Trans>Document preview in emails</Trans>
+                </strong>
+              </h2>
+
+              <p>
+                <Trans>
+                  Embeds an image of the first page of the document inside signing request and reminder emails. It is
+                  automatically left out for recipients who must authenticate before accessing the document.
+                </Trans>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </label>
+      </div>
     </div>
   );
 };

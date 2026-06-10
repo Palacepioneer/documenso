@@ -18,6 +18,7 @@ const EMAIL_SETTINGS_LABELS: Record<keyof TDocumentEmailSettings, MessageDescrip
   ownerDocumentCompleted: msg`Owner document completed`,
   ownerRecipientExpired: msg`Owner recipient expired`,
   ownerDocumentCreated: msg`Owner document created`,
+  emailDocumentThumbnail: msg`Document preview in emails`,
 };
 
 const emailSettingsKeys = Object.keys(EMAIL_SETTINGS_LABELS) as (keyof TDocumentEmailSettings)[];

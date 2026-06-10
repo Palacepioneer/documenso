@@ -7,6 +7,7 @@ import { match, P } from 'ts-pattern';
 import { Button, Section, Text } from '../components';
 import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
 import { TemplateCustomMessageBody } from './template-custom-message-body';
+import { TemplateDocumentThumbnail } from './template-document-thumbnail';
 
 export interface TemplateDocumentInviteProps {
   inviterName: string;
@@ -20,6 +21,8 @@ export interface TemplateDocumentInviteProps {
   includeSenderDetails?: boolean;
   organisationType?: OrganisationType;
   customBody?: string;
+  /** Page-1 preview of the actual document (inline CID image). */
+  documentThumbnailSrc?: string;
 }
 
 export const TemplateDocumentInvite = ({
@@ -32,6 +35,7 @@ export const TemplateDocumentInvite = ({
   includeSenderDetails,
   organisationType,
   customBody,
+  documentThumbnailSrc,
 }: TemplateDocumentInviteProps) => {
   const { _ } = useLingui();
 
@@ -94,6 +98,10 @@ export const TemplateDocumentInvite = ({
             .with(RecipientRole.ASSISTANT, () => <Trans>you can fill it in for them — open it below.</Trans>)
             .exhaustive()}
         </Text>
+      )}
+
+      {documentThumbnailSrc && (
+        <TemplateDocumentThumbnail src={documentThumbnailSrc} alt={docDisplayName} href={signDocumentLink} />
       )}
 
       <Section className="mt-8 mb-4 text-center">

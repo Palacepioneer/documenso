@@ -12,6 +12,7 @@ export enum DocumentEmailEvents {
   OwnerDocumentCompleted = 'ownerDocumentCompleted',
   OwnerRecipientExpired = 'ownerRecipientExpired',
   OwnerDocumentCreated = 'ownerDocumentCreated',
+  EmailDocumentThumbnail = 'emailDocumentThumbnail',
 }
 
 export const ZDocumentEmailSettingsSchema = z
@@ -54,6 +55,12 @@ export const ZDocumentEmailSettingsSchema = z
       .boolean()
       .describe('Whether to send an email to the document owner when a document is created from a direct template.')
       .default(true),
+    emailDocumentThumbnail: z
+      .boolean()
+      .describe(
+        'Whether to embed a preview image of the first page of the document inside signing request and reminder emails. Automatically disabled for recipients who require access authentication.',
+      )
+      .default(true),
   })
   .strip()
   .catch(() => ({ ...DEFAULT_DOCUMENT_EMAIL_SETTINGS }));
@@ -77,6 +84,7 @@ export const extractDerivedDocumentEmailSettings = (documentMeta?: DocumentMeta 
     ownerDocumentCompleted: emailSettings.ownerDocumentCompleted,
     ownerRecipientExpired: emailSettings.ownerRecipientExpired,
     ownerDocumentCreated: emailSettings.ownerDocumentCreated,
+    emailDocumentThumbnail: emailSettings.emailDocumentThumbnail,
   };
 };
 
@@ -90,4 +98,5 @@ export const DEFAULT_DOCUMENT_EMAIL_SETTINGS: TDocumentEmailSettings = {
   ownerDocumentCompleted: true,
   ownerRecipientExpired: true,
   ownerDocumentCreated: true,
+  emailDocumentThumbnail: true,
 };

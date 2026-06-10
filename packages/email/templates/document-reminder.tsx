@@ -13,6 +13,8 @@ export type DocumentReminderEmailTemplateProps = {
   assetBaseUrl?: string;
   customBody?: string;
   role: RecipientRole;
+  /** Page-1 preview of the actual document (inline CID image). */
+  documentThumbnailSrc?: string;
 };
 
 export const DocumentReminderEmailTemplate = ({
@@ -22,6 +24,7 @@ export const DocumentReminderEmailTemplate = ({
   assetBaseUrl = 'http://localhost:3002',
   customBody,
   role = RecipientRole.SIGNER,
+  documentThumbnailSrc,
 }: DocumentReminderEmailTemplateProps) => {
   const { _ } = useLingui();
 
@@ -38,6 +41,7 @@ export const DocumentReminderEmailTemplate = ({
         assetBaseUrl={assetBaseUrl}
         role={role}
         customBody={customBody}
+        documentThumbnailSrc={documentThumbnailSrc}
       />
     </TemplateEmailShell>
   );

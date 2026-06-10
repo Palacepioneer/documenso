@@ -7,6 +7,7 @@ import { match } from 'ts-pattern';
 import { Button, Section, Text } from '../components';
 import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
 import { TemplateCustomMessageBody } from './template-custom-message-body';
+import { TemplateDocumentThumbnail } from './template-document-thumbnail';
 
 export interface TemplateDocumentReminderProps {
   recipientName: string;
@@ -15,6 +16,8 @@ export interface TemplateDocumentReminderProps {
   assetBaseUrl: string;
   role: RecipientRole;
   customBody?: string;
+  /** Page-1 preview of the actual document (inline CID image). */
+  documentThumbnailSrc?: string;
 }
 
 export const TemplateDocumentReminder = ({
@@ -23,6 +26,7 @@ export const TemplateDocumentReminder = ({
   signDocumentLink,
   role,
   customBody,
+  documentThumbnailSrc,
 }: TemplateDocumentReminderProps) => {
   const { _ } = useLingui();
 
@@ -63,6 +67,10 @@ export const TemplateDocumentReminder = ({
         <Section className="mx-auto mt-6 max-w-[85%]">
           <TemplateCustomMessageBody text={customBody} />
         </Section>
+      )}
+
+      {documentThumbnailSrc && (
+        <TemplateDocumentThumbnail src={documentThumbnailSrc} alt={docDisplayName} href={signDocumentLink} />
       )}
 
       <Section className="mt-8 mb-4 text-center">

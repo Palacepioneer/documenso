@@ -95,3 +95,62 @@ export const pdfToImages = async (pdfBytes: Uint8Array, options: PdfToImagesOpti
 
   return images;
 };
+
+export type PdfFirstPageToPngOptions = {
+  /** Width of the output PNG in pixels. */
+  targetWidth?: number;
+};
+
+/**
+ * Jess fork: render page 1 of a PDF to a PNG at a fixed output width.
+ * Used for the document-preview hero embedded in signing emails.
+ */
+export const pdfFirstPageToPng = async (pdfBytes: Uint8Array, options: PdfFirstPageToPngOptions = {}) => {
+  const { targetWidth = 600 } = options;
+
+  const task = await pdfjsLib.getDocument({
+    data: pdfBytes,
+    CanvasFactory: SkiaCanvasFactory,
+  });
+
+  const pdf = await task.promise;
+
+  try {
+    const page = await pdf.getPage(1);
+
+    const baseViewport = page.getViewport({ scale: 1 });
+    const scale = targetWidth / baseViewport.width;
+    const viewport = page.getViewport({ scale });
+
+    const canvas = new Canvas(viewport.width, viewport.height);
+    canvas.gpu = false;
+
+    const canvasContext = canvas.getContext('2d');
+
+    // Paint a white sheet first so transparent PDF backgrounds render as paper.
+    canvasContext.fillStyle = '#FFFFFF';
+    canvasContext.fillRect(0, 0, viewport.width, viewport.height);
+
+    await page.render({
+      // @ts-expect-error skia-canvas satisfies the requirements
+      canvas,
+      // @ts-expect-error skia-canvas satisfies the requirements
+      canvasContext,
+      viewport,
+    }).promise;
+
+    const result = {
+      image: await canvas.toBuffer('png'),
+      width: Math.floor(viewport.width),
+      height: Math.floor(viewport.height),
+      mimeType: 'image/png',
+    };
+
+    void page.cleanup();
+
+    return result;
+  } finally {
+    void pdf.destroy().catch((e) => console.error(e));
+    void task.destroy().catch((e) => console.error(e));
+  }
+};

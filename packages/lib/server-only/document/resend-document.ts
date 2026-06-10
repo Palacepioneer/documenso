@@ -29,6 +29,12 @@ import { renderEmailWithI18N } from '../../utils/render-email-with-i18n';
 import { getEmailContext } from '../email/get-email-context';
 import { getEnvelopeWhereInput } from '../envelope/get-envelope-by-id';
 import { triggerWebhook } from '../webhooks/trigger/trigger-webhook';
+import {
+  EMAIL_DOCUMENT_THUMBNAIL_CID,
+  emailDocumentThumbnailAttachment,
+  getEmailDocumentThumbnail,
+  isEmailThumbnailAllowedForRecipient,
+} from './get-email-document-thumbnail';
 
 export type ResendDocumentOptions = {
   id: EnvelopeIdOptions;
@@ -62,6 +68,15 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
     include: {
       recipients: true,
       documentMeta: true,
+      envelopeItems: {
+        include: {
+          documentData: true,
+        },
+        orderBy: {
+          order: 'asc',
+        },
+        take: 1,
+      },
       team: {
         select: {
           teamEmail: true,
@@ -129,6 +144,11 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
     meta: envelope.documentMeta,
   });
 
+  // Jess fork: page-1 preview of the actual document, rendered once and
+  // reused for every reminded recipient. Per-recipient access-auth gating
+  // happens below.
+  const documentThumbnail = await getEmailDocumentThumbnail({ envelope });
+
   await Promise.all(
     recipientsToRemind.map(async (recipient) => {
       if (recipient.role === RecipientRole.CC || !isRecipientEmailValidForSending(recipient)) {
@@ -182,6 +202,9 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
       const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
       const signDocumentLink = `${NEXT_PUBLIC_WEBAPP_URL()}/sign/${recipient.token}`;
 
+      const recipientThumbnail =
+        documentThumbnail && isEmailThumbnailAllowedForRecipient({ envelope, recipient }) ? documentThumbnail : null;
+
       const template = createElement(DocumentInviteEmailTemplate, {
         documentName: envelope.title,
         inviterName: user.name || undefined,
@@ -196,6 +219,7 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
         selfSigner,
         organisationType,
         teamName: envelope.team?.name,
+        documentThumbnailSrc: recipientThumbnail ? `cid:${EMAIL_DOCUMENT_THUMBNAIL_CID}` : undefined,
       });
 
       const [html, text] = await Promise.all([
@@ -224,6 +248,7 @@ export const resendDocument = async ({ id, userId, recipients, teamId, requestMe
           : emailSubject,
         html,
         text,
+        attachments: recipientThumbnail ? [emailDocumentThumbnailAttachment(recipientThumbnail)] : undefined,
       });
 
       await prisma.documentAuditLog.create({
