@@ -35,11 +35,15 @@ export const TemplateEmailShell = ({ previewText, assetBaseUrl, children, belowC
       ?.replace(/,?\s+(inc\.?|llc|ltd\.?|gmbh)$/i, '')
       .trim() || 'Logo';
 
+  // Logo at 3rem (48px): the signature mark's ink only fills ~2/3 of its
+  // canvas height, so anything under ~2.5rem renders illegibly small
+  // (operator correction 2026-06-10). The mark is near-black ink — 15.8:1
+  // on the cream card, so no contrast treatment is needed.
   const logo =
     branding.brandingEnabled && branding.brandingLogo ? (
-      <Img src={branding.brandingLogo} alt={companyName} className="mb-5 h-6" />
+      <Img src={branding.brandingLogo} alt={companyName} className="mb-5 h-12" style={{ height: '3rem' }} />
     ) : (
-      <Img src={getAssetUrl('/static/logo.png')} alt={companyName} className="mb-5 h-6" />
+      <Img src={getAssetUrl('/static/logo.png')} alt={companyName} className="mb-5 h-12" style={{ height: '3rem' }} />
     );
 
   return (
