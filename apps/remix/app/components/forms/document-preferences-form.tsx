@@ -397,12 +397,13 @@ export const DocumentPreferencesForm = ({
                     </div>
 
                     <Alert variant="neutral" className="mt-1 px-2.5 py-1.5 text-sm">
+                      {/* Jess fork: previews match the first-person invite copy. */}
                       {field.value ? (
                         <Trans>
-                          "{placeholderEmail}" on behalf of "Team Name" has invited you to sign "example document".
+                          I need your signature on "example document". — "{placeholderEmail}" on behalf of "Team Name"
                         </Trans>
                       ) : (
-                        <Trans>"Team Name" has invited you to sign "example document".</Trans>
+                        <Trans>I need your signature on "example document".</Trans>
                       )}
                     </Alert>
                   </div>

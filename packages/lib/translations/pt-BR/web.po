@@ -40,10 +40,6 @@ msgstr "“{documentName}” foi assinado"
 msgid "“{documentName}” was signed by all signers"
 msgstr "“{documentName}” foi assinado por todos os signatários"
 
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"{placeholderEmail}\" em nome de \"Nome da Equipe\" convidou você para assinar \"exemplo de documento\"."
-
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully deleted"
 msgstr ""
@@ -51,10 +47,6 @@ msgstr ""
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully hidden"
 msgstr ""
-
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"Nome da Equipe\" convidou você para assinar \"exemplo de documento\"."
 
 #. placeholder {0}: warning.line
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.branding.tsx
@@ -639,42 +631,6 @@ msgstr "<0>{organisationName}</0> solicitou a criação de uma conta em seu nome
 #: packages/email/templates/organisation-account-link-confirmation.tsx
 msgid "<0>{organisationName}</0> has requested to link your current Documenso account to their organisation."
 msgstr "<0>{organisationName}</0> solicitou vincular sua conta atual do Documenso à organização deles."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> convidou você para aprovar este documento"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> convidou você para auxiliar neste documento"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> convidou você para assinar este documento"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> convidou você para visualizar este documento"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> em nome de \"{0}\" convidou você para aprovar este documento"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> em nome de \"{0}\" convidou você para auxiliar neste documento"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> em nome de \"{0}\" convidou você para assinar este documento"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> em nome de \"{0}\" convidou você para visualizar este documento"
 
 #: packages/email/templates/confirm-team-email.tsx
 msgid "<0>{teamName}</0> has requested to use your email address for their team on Documenso."

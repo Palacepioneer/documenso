@@ -45,10 +45,6 @@ msgstr "“{documentName}”已被签署"
 msgid "“{documentName}” was signed by all signers"
 msgstr "“{documentName}”已由所有签署人签署"
 
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sign \"example document\"."
-msgstr "“{placeholderEmail}”代表“Team Name”邀请您签署“example document”。"
-
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully deleted"
 msgstr "“{title}”已成功删除"
@@ -56,10 +52,6 @@ msgstr "“{title}”已成功删除"
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully hidden"
 msgstr "“{title}”已成功隐藏"
-
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"Team Name\" has invited you to sign \"example document\"."
-msgstr "“Team Name”已邀请您签署“example document”。"
 
 #. placeholder {0}: warning.line
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.branding.tsx
@@ -644,42 +636,6 @@ msgstr "<0>{organisationName}</0> 请求代表您创建一个账户。"
 #: packages/email/templates/organisation-account-link-confirmation.tsx
 msgid "<0>{organisationName}</0> has requested to link your current Documenso account to their organisation."
 msgstr "<0>{organisationName}</0> 请求将您当前的 Documenso 账户关联到其组织。"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> 邀请你审批此文档"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> 邀请你协助处理此文档"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> 邀请你签署此文档"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> 邀请你查看此文档"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> 代表 \"{0}\" 邀请你审批此文档"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> 代表 \"{0}\" 邀请你协助处理此文档"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> 代表 \"{0}\" 邀请你签署此文档"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> 代表 \"{0}\" 邀请你查看此文档"
 
 #: packages/email/templates/confirm-team-email.tsx
 msgid "<0>{teamName}</0> has requested to use your email address for their team on Documenso."

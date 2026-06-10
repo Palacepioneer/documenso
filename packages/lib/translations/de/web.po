@@ -45,10 +45,6 @@ msgstr "„{documentName}“ wurde unterschrieben"
 msgid "“{documentName}” was signed by all signers"
 msgstr "„{documentName}“ wurde von allen Unterzeichnern signiert"
 
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"{placeholderEmail}\" im Auftrag des \"Team Name\" hat Sie eingeladen, das \"Beispieldokument\" zu unterschreiben."
-
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully deleted"
 msgstr "\"{title}\" wurde erfolgreich gelöscht"
@@ -56,10 +52,6 @@ msgstr "\"{title}\" wurde erfolgreich gelöscht"
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully hidden"
 msgstr "\"{title}\" wurde erfolgreich ausgeblendet"
-
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"Team Name\" hat Sie eingeladen, das \"Beispieldokument\" zu unterschreiben."
 
 #. placeholder {0}: warning.line
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.branding.tsx
@@ -644,42 +636,6 @@ msgstr "<0>{organisationName}</0> hat angefragt, ein Konto in Ihrem Namen zu ers
 #: packages/email/templates/organisation-account-link-confirmation.tsx
 msgid "<0>{organisationName}</0> has requested to link your current Documenso account to their organisation."
 msgstr "<0>{organisationName}</0> hat angefragt, Ihr bestehendes Documenso-Konto mit ihrer Organisation zu verknüpfen."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> hat Sie eingeladen, dieses Dokument zu genehmigen"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> hat Sie eingeladen, bei diesem Dokument mitzuwirken"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> hat Sie eingeladen, dieses Dokument zu unterschreiben"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> hat Sie eingeladen, dieses Dokument anzusehen"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> im Namen von \"{0}\" hat Sie eingeladen, dieses Dokument zu genehmigen"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> im Namen von \"{0}\" hat Sie eingeladen, bei diesem Dokument mitzuwirken"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> im Namen von \"{0}\" hat Sie eingeladen, dieses Dokument zu unterschreiben"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> im Namen von \"{0}\" hat Sie eingeladen, dieses Dokument anzusehen"
 
 #: packages/email/templates/confirm-team-email.tsx
 msgid "<0>{teamName}</0> has requested to use your email address for their team on Documenso."

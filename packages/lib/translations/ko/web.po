@@ -45,10 +45,6 @@ msgstr "“{documentName}” 문서가 서명되었습니다."
 msgid "“{documentName}” was signed by all signers"
 msgstr "“{documentName}” 문서가 모든 서명자에게서 서명을 완료했습니다."
 
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"{placeholderEmail}\"이(가) \"Team Name\"을(를) 대신하여 \"example document\"에 서명하도록 귀하를 초대했습니다."
-
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully deleted"
 msgstr "\"{title}\"이(가) 성공적으로 삭제되었습니다."
@@ -56,10 +52,6 @@ msgstr "\"{title}\"이(가) 성공적으로 삭제되었습니다."
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully hidden"
 msgstr "\"{title}\"이(가) 성공적으로 숨겨졌습니다"
-
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"Team Name\"이(가) \"example document\"에 서명하도록 귀하를 초대했습니다."
 
 #. placeholder {0}: warning.line
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.branding.tsx
@@ -644,42 +636,6 @@ msgstr "<0>{organisationName}</0>에서 귀하를 대신해 계정을 생성하�
 #: packages/email/templates/organisation-account-link-confirmation.tsx
 msgid "<0>{organisationName}</0> has requested to link your current Documenso account to their organisation."
 msgstr "<0>{organisationName}</0>에서 귀하의 기존 Documenso 계정을 조직에 연결하려고 합니다."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 이 문서를 승인해 달라고 초대했습니다."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 이 문서를 처리하는 데 참여해 달라고 초대했습니다."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 이 문서에 서명해 달라고 초대했습니다."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 이 문서를 열람해 달라고 초대했습니다."
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to approve this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 \"{0}\"을(를) 대신하여 이 문서를 승인해 달라고 초대했습니다."
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to assist this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 \"{0}\"을(를) 대신하여 이 문서를 처리하는 데 참여해 달라고 초대했습니다."
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to sign this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 \"{0}\"을(를) 대신하여 이 문서에 서명해 달라고 초대했습니다."
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to view this document"
-msgstr "<0>{senderName} {senderEmail}</0> 님이 \"{0}\"을(를) 대신하여 이 문서를 열람해 달라고 초대했습니다."
 
 #: packages/email/templates/confirm-team-email.tsx
 msgid "<0>{teamName}</0> has requested to use your email address for their team on Documenso."

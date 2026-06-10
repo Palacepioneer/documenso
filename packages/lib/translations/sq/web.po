@@ -48,14 +48,6 @@ msgstr "“{documentName}” është nënshkruar nga të gjithë nënshkruesit"
 msgid "\"{documentTitle}\" has been successfully deleted"
 msgstr "\"{documentTitle}\" është fshirë me sukses"
 
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"{placeholderEmail}\" në emër të \"Emri i Ekipit\" ju ka ftuar të nënshkruani \"dokumentin e shembullit\"."
-
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"Team Name\" has invited you to sign \"example document\"."
-msgstr "\"Emri i Ekipit\" ju ka ftuar të nënshkruani \"dokumentin e shembullit\"."
-
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 #: apps/remix/app/components/embed/embed-document-signing-page.tsx
 msgid "(You)"
@@ -3628,22 +3620,6 @@ msgstr "Emri i Grupit"
 msgid "Groups"
 msgstr "Grupet"
 
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "has invited you to approve this document"
-msgstr "ju ka ftuar të miratoni këtë dokument"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "has invited you to assist this document"
-msgstr "ju ka ftuar të asistoni këtë dokument"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "has invited you to sign this document"
-msgstr "ju ka ftuar të nënshkruani këtë dokument"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "has invited you to view this document"
-msgstr "ju ka ftuar të shikoni këtë dokument"
-
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
@@ -4530,26 +4506,6 @@ msgstr "Numri i anëtarëve të lejuar. 0 = I Pakufizuar"
 #: apps/remix/app/components/forms/subscription-claim-form.tsx
 msgid "Number of teams allowed. 0 = Unlimited"
 msgstr "Numri i ekipeve të lejueshme. 0 = I Pakufizuar"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "on behalf of \"{0}\" has invited you to approve this document"
-msgstr "në emër të \"{0}\" ju ka ftuar të miratoni këtë dokument"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "on behalf of \"{0}\" has invited you to assist this document"
-msgstr "emër të \"{0}\" ju ka ftuar të asistoni këtë dokument"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "on behalf of \"{0}\" has invited you to sign this document"
-msgstr "në emër të \"{0}\" ju ka ftuar të nënshkruani këtë dokument"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
-msgid "on behalf of \"{0}\" has invited you to view this document"
-msgstr "në emër të \"{0}\" ju ka ftuar të shikoni këtë dokument"
 
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 msgid "On this page, you can create a new webhook."

@@ -188,72 +188,78 @@ export const DocumentSigningPageViewV1 = ({
         <div className="mt-1.5 flex flex-wrap items-center justify-between gap-y-2 sm:mt-2.5 sm:gap-y-0">
           <div className="max-w-[50ch]">
             <span className="text-muted-foreground">
+              {/* Jess fork: first person — the sender speaks as "I", never about
+                  herself in third person (operator directive 2026-06-10). */}
               {match(recipient.role)
                 .with(RecipientRole.VIEWER, () =>
                   includeSenderDetails ? (
                     <Trans>
+                      I'd like you to take a look at this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
+                        {senderName} ({senderEmail})
                       </span>{' '}
-                      on behalf of "{document.team?.name}" has invited you to view this document
+                      on behalf of "{document.team?.name}"
                     </Trans>
                   ) : (
                     <Trans>
+                      I'd like you to take a look at this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
-                      </span>{' '}
-                      has invited you to view this document
+                        {senderName} ({senderEmail})
+                      </span>
                     </Trans>
                   ),
                 )
                 .with(RecipientRole.SIGNER, () =>
                   includeSenderDetails ? (
                     <Trans>
+                      I need your signature on this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
+                        {senderName} ({senderEmail})
                       </span>{' '}
-                      on behalf of "{document.team?.name}" has invited you to sign this document
+                      on behalf of "{document.team?.name}"
                     </Trans>
                   ) : (
                     <Trans>
+                      I need your signature on this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
-                      </span>{' '}
-                      has invited you to sign this document
+                        {senderName} ({senderEmail})
+                      </span>
                     </Trans>
                   ),
                 )
                 .with(RecipientRole.APPROVER, () =>
                   includeSenderDetails ? (
                     <Trans>
+                      I need your approval on this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
+                        {senderName} ({senderEmail})
                       </span>{' '}
-                      on behalf of "{document.team?.name}" has invited you to approve this document
+                      on behalf of "{document.team?.name}"
                     </Trans>
                   ) : (
                     <Trans>
+                      I need your approval on this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
-                      </span>{' '}
-                      has invited you to approve this document
+                        {senderName} ({senderEmail})
+                      </span>
                     </Trans>
                   ),
                 )
                 .with(RecipientRole.ASSISTANT, () =>
                   includeSenderDetails ? (
                     <Trans>
+                      I need your help with this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
+                        {senderName} ({senderEmail})
                       </span>{' '}
-                      on behalf of "{document.team?.name}" has invited you to assist this document
+                      on behalf of "{document.team?.name}"
                     </Trans>
                   ) : (
                     <Trans>
+                      I need your help with this document —{' '}
                       <span className="truncate" title={senderName}>
-                        {senderName} {senderEmail}
-                      </span>{' '}
-                      has invited you to assist this document
+                        {senderName} ({senderEmail})
+                      </span>
                     </Trans>
                   ),
                 )

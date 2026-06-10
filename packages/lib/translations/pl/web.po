@@ -45,10 +45,6 @@ msgstr "Dokument „{documentName}” został podpisany"
 msgid "“{documentName}” was signed by all signers"
 msgstr "Dokument „{documentName}” został podpisany przez wszystkich podpisujących"
 
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sign \"example document\"."
-msgstr "Użytkownik „{placeholderEmail}” z zespołu „Zespół X” zaprosił Cię do podpisania dokumentu „ABC”."
-
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully deleted"
 msgstr "Dokument „{title}” został usunięty"
@@ -56,10 +52,6 @@ msgstr "Dokument „{title}” został usunięty"
 #: apps/remix/app/components/dialogs/envelope-delete-dialog.tsx
 msgid "\"{title}\" has been successfully hidden"
 msgstr "Dokument „{title}” został ukryty"
-
-#: apps/remix/app/components/forms/document-preferences-form.tsx
-msgid "\"Team Name\" has invited you to sign \"example document\"."
-msgstr "„Zespół X” zaprosił Cię do podpisania dokumentu „ABC”."
 
 #. placeholder {0}: warning.line
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.branding.tsx
@@ -644,42 +636,6 @@ msgstr "Organizacja <0>{organisationName}</0> poprosiła o utworzenie konta w Tw
 #: packages/email/templates/organisation-account-link-confirmation.tsx
 msgid "<0>{organisationName}</0> has requested to link your current Documenso account to their organisation."
 msgstr "Organizacja <0>{organisationName}</0> poprosiła o połączenie Twojego konta Documenso z ich organizacją."
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to approve this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> zaprosił Cię do zatwierdzenia dokumentu"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to assist this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> zaprosił Cię do przygotowania dokumentu"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to sign this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> zaprosił Cię do podpisania dokumentu"
-
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> has invited you to view this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> zaprosił Cię do wyświetlenia dokumentu"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to approve this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> z zespołu „{0}” zaprosił Cię do zatwierdzenia dokumentu"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to assist this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> z zespołu „{0}” zaprosił Cię do przygotowania dokumentu"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to sign this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> z zespołu „{0}” zaprosił Cię do podpisania dokumentu"
-
-#. placeholder {0}: document.team?.name
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v1.tsx
-msgid "<0>{senderName} {senderEmail}</0> on behalf of \"{0}\" has invited you to view this document"
-msgstr "Użytkownik <0>{senderName} {senderEmail}</0> z zespołu „{0}” zaprosił Cię do wyświetlenia dokumentu"
 
 #: packages/email/templates/confirm-team-email.tsx
 msgid "<0>{teamName}</0> has requested to use your email address for their team on Documenso."
