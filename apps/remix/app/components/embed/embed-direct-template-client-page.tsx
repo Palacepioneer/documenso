@@ -353,7 +353,7 @@ export const EmbedDirectTemplateClientPage = ({
       <div className="embed--Actions mb-4 flex w-full flex-row-reverse items-center justify-between">
         <DocumentSigningAttachmentsPopover envelopeId={envelopeId} token={recipient.token} />
 
-        <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto md:h-12" />
+        <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-20 w-auto md:h-24" />
       </div>
 
       <div className="relative flex w-full flex-col gap-x-6 gap-y-12 md:flex-row">

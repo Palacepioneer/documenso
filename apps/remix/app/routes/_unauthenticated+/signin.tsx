@@ -85,10 +85,11 @@ export default function SignIn({ loaderData }: Route.ComponentProps) {
           </Alert>
         )}
 
+        {/* Operator 2026-06-10 ("tiny, as always"): logo doubled to be prominent, not decorative. */}
         <img
           src="/branding/logo-jess.png"
           alt="Jess Intelligence"
-          className="mb-4 h-12 w-auto"
+          className="mb-4 h-20 w-auto md:h-24"
         />
 
         <h1 className="font-semibold text-2xl">

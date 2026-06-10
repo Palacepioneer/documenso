@@ -19,13 +19,12 @@ import {
   useLoaderData,
   useMatches,
 } from 'react-router';
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
+import { PreventFlashOnWrongTheme, Theme, ThemeProvider, useTheme } from 'remix-themes';
 
 import type { Route } from './+types/root';
 import stylesheet from './app.css?url';
 import { GenericErrorLayout } from './components/general/generic-error-layout';
 import { langCookie } from './storage/lang-cookie.server';
-import { themeSessionResolver } from './storage/theme-session.server';
 import { appMetaTags } from './utils/meta';
 import { nonce } from './utils/nonce';
 
@@ -44,8 +43,6 @@ export const shouldRevalidate = () => false;
 
 export async function loader({ context, request }: Route.LoaderArgs) {
   const session = await getOptionalSession(request);
-
-  const { getTheme } = await themeSessionResolver(request);
 
   const cookieHeader = request.headers.get('cookie') ?? '';
 
@@ -66,7 +63,12 @@ export async function loader({ context, request }: Route.LoaderArgs) {
   return data(
     {
       lang,
-      theme: getTheme(),
+      // App-wide light-mode lock (operator ruling 2026-06-10): the Jess brand is
+      // light — the navy script mark disappears on dark surfaces, so dark mode is
+      // removed as an option entirely. Pinning the SSR theme also makes
+      // `PreventFlashOnWrongTheme` skip its prefers-color-scheme client script,
+      // so OS-level dark preference can no longer flip public pages dark.
+      theme: Theme.LIGHT,
       disableAnimations,
       // Surface the per-request CSP nonce produced by `securityHeadersMiddleware` so all
       // SSR-rendered <script>/<style> elements in this layout (and child

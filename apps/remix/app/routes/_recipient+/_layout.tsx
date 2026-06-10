@@ -47,7 +47,8 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
           <AuthenticatedHeader />
         ) : (
           <header className="px-4 pt-6 md:px-8">
-            <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto md:h-12" />
+            {/* Operator 2026-06-10 ("tiny, as always"): logo doubled to be prominent, not decorative. */}
+            <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-20 w-auto md:h-24" />
           </header>
         ))}
 

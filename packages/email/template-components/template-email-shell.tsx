@@ -1,7 +1,6 @@
-import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section } from '../components';
+import { Body, Container, Head, Html, Img, Link, Preview, Section } from '../components';
 import { JESS_COLORS } from '../jess-brand';
 import { useBranding } from '../providers/branding';
-import { TemplateFooter } from './template-footer';
 import { TemplateJessSignature } from './template-jess-signature';
 
 export interface TemplateEmailShellProps {
@@ -14,7 +13,8 @@ export interface TemplateEmailShellProps {
 
 /**
  * Shared outer structure for Jess Intelligence lifecycle emails:
- * white body -> cream card with a gold top rule -> linked logo -> content -> footer.
+ * white body -> cream card with a gold top rule -> linked logo -> content ->
+ * Jess signature card, and NOTHING after it (operator ruling 2026-06-10).
  *
  * - `bgcolor` attributes are set alongside inline styles so image-blocked and
  *   legacy Outlook renderings keep the card structure.
@@ -36,17 +36,25 @@ export const TemplateEmailShell = ({ previewText, assetBaseUrl, children, belowC
       ?.replace(/,?\s+(inc\.?|llc|ltd\.?|gmbh)$/i, '')
       .trim() || 'Logo';
 
-  // Logo at 6rem (96px): the signature mark's ink only fills ~2/3 of its
+  // Logo at 9rem (144px): the signature mark's ink only fills ~2/3 of its
   // canvas height, so it renders small for its box. Operator corrections
-  // 2026-06-10: first bump 1.5rem -> 3rem, then "double the logo size"
-  // again -> 6rem. The mark is near-black ink — 15.8:1 on the cream card,
-  // so no contrast treatment is needed.
-  const logo =
-    branding.brandingEnabled && branding.brandingLogo ? (
-      <Img src={branding.brandingLogo} alt={companyName} className="mb-5 h-24" style={{ height: '6rem' }} />
-    ) : (
-      <Img src={getAssetUrl('/static/logo.png')} alt={companyName} className="mb-5 h-24" style={{ height: '6rem' }} />
-    );
+  // 2026-06-10: 1.5rem -> 3rem -> 6rem ("double the logo size"), then the
+  // "tiny, as always" pass -> 9rem.
+  //
+  // The asset is /static/logo-email.png — the canonical navy mark with the
+  // cream backdrop BAKED INTO the pixels. Dark-mode email clients (Gmail
+  // app, Outlook dark) recolor CSS/bgcolor backgrounds but never image
+  // pixels, so a navy-on-transparent logo (like the DB org branding logo)
+  // can vanish on a client-darkened card; the baked backdrop cannot be
+  // hidden. Single-tenant Jess fork: the bundled asset IS the org mark.
+  const logo = (
+    <Img
+      src={getAssetUrl('/static/logo-email.png')}
+      alt={companyName}
+      className="mb-5 h-36"
+      style={{ height: '9rem', backgroundColor: JESS_COLORS.cream }}
+    />
+  );
 
   return (
     <Html>
@@ -81,11 +89,9 @@ export const TemplateEmailShell = ({ previewText, assetBaseUrl, children, belowC
 
           {belowCard ? <Container className="mx-auto mt-6 max-w-xl">{belowCard}</Container> : null}
 
-          <Hr className="mx-auto mt-10 max-w-xl" style={{ borderColor: '#E5E0D5' }} />
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter />
-          </Container>
+          {/* No footer: operator ruling 2026-06-10 — emails END just below Jess's
+              photo+signature card. The stock rule + company-details block duplicated
+              the signature card's contact info. */}
         </Section>
       </Body>
     </Html>

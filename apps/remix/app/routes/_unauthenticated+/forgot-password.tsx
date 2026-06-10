@@ -13,6 +13,9 @@ export default function ForgotPasswordPage() {
   return (
     <div className="w-screen max-w-lg px-4">
       <div className="w-full">
+        {/* Brand mark, consistent with /signin (operator 2026-06-10: logo prominent everywhere). */}
+        <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="mb-4 h-20 w-auto md:h-24" />
+
         <h1 className="font-semibold text-3xl">
           <Trans>Forgot your password?</Trans>
         </h1>

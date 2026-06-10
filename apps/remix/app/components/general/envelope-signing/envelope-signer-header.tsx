@@ -31,17 +31,17 @@ export const EnvelopeSignerHeader = () => {
       {/* Left side - Logo and title */}
       <div className="flex min-w-0 flex-1 items-center space-x-2 md:w-auto md:flex-none">
         {isEmbedSigning ? (
-          <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto flex-shrink-0" />
+          <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-16 w-auto flex-shrink-0 md:h-20" />
         ) : (
           <Link to="/" className="flex-shrink-0">
             {envelopeData.settings.brandingEnabled && envelopeData.settings.brandingLogo ? (
               <img
                 src={`/api/branding/logo/team/${envelope.teamId}`}
                 alt={`${envelope.team.name}'s Logo`}
-                className="h-10 w-auto"
+                className="h-16 w-auto md:h-20"
               />
             ) : (
-              <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto" />
+              <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-16 w-auto md:h-20" />
             )}
           </Link>
         )}
