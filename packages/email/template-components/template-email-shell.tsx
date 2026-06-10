@@ -2,6 +2,7 @@ import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section } from '..
 import { JESS_COLORS } from '../jess-brand';
 import { useBranding } from '../providers/branding';
 import { TemplateFooter } from './template-footer';
+import { TemplateJessSignature } from './template-jess-signature';
 
 export interface TemplateEmailShellProps {
   previewText: string;
@@ -35,15 +36,16 @@ export const TemplateEmailShell = ({ previewText, assetBaseUrl, children, belowC
       ?.replace(/,?\s+(inc\.?|llc|ltd\.?|gmbh)$/i, '')
       .trim() || 'Logo';
 
-  // Logo at 3rem (48px): the signature mark's ink only fills ~2/3 of its
-  // canvas height, so anything under ~2.5rem renders illegibly small
-  // (operator correction 2026-06-10). The mark is near-black ink — 15.8:1
-  // on the cream card, so no contrast treatment is needed.
+  // Logo at 6rem (96px): the signature mark's ink only fills ~2/3 of its
+  // canvas height, so it renders small for its box. Operator corrections
+  // 2026-06-10: first bump 1.5rem -> 3rem, then "double the logo size"
+  // again -> 6rem. The mark is near-black ink — 15.8:1 on the cream card,
+  // so no contrast treatment is needed.
   const logo =
     branding.brandingEnabled && branding.brandingLogo ? (
-      <Img src={branding.brandingLogo} alt={companyName} className="mb-5 h-12" style={{ height: '3rem' }} />
+      <Img src={branding.brandingLogo} alt={companyName} className="mb-5 h-24" style={{ height: '6rem' }} />
     ) : (
-      <Img src={getAssetUrl('/static/logo.png')} alt={companyName} className="mb-5 h-12" style={{ height: '3rem' }} />
+      <Img src={getAssetUrl('/static/logo.png')} alt={companyName} className="mb-5 h-24" style={{ height: '6rem' }} />
     );
 
   return (
@@ -72,6 +74,8 @@ export const TemplateEmailShell = ({ previewText, assetBaseUrl, children, belowC
               {branding.brandingUrl ? <Link href={branding.brandingUrl}>{logo}</Link> : logo}
 
               {children}
+
+              <TemplateJessSignature />
             </Section>
           </Container>
 

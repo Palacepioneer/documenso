@@ -48,6 +48,11 @@ export const TemplateDocumentRecipientSigned = ({
             That's {signedCount} of {totalCount} signatures in — you'll get the final copy when
             everyone's signed.
           </Trans>
+        ) : totalCount === 1 ? (
+          <Trans>
+            That's everyone — the document is signed. I'm sealing the final copy now and it's on
+            its way to your inbox.
+          </Trans>
         ) : (
           <Trans>Their part's done — you'll get the final copy once everyone has signed.</Trans>
         )}

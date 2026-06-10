@@ -20,7 +20,11 @@ export const DocumentCompletedEmailTemplate = ({
 }: DocumentCompletedEmailTemplateProps) => {
   const { _ } = useLingui();
 
-  const previewText = msg`All signed — ${documentName} is complete, your copy is ready`;
+  // Count-aware preview: singular copy for single-signer envelopes.
+  const previewText =
+    signers && signers.length === 1
+      ? msg`Signed — ${documentName} is complete, your copy is ready`
+      : msg`All signed — ${documentName} is complete, your copy is ready`;
 
   return (
     <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>

@@ -158,9 +158,14 @@ const SigningCardContent = ({ className, name, signature }: SigningCardContentPr
             <img src={signature.signatureImageAsBase64} alt="signature" className="h-full max-w-[100%] dark:invert" />
           ))
           .with({ typedSignature: P.string }, (signature) => (
+            // Jess fork: the signature on the animated card was rendered in
+            // washed-out muted-foreground/60 (near-invisible against the card,
+            // reads as white) — use brand navy ink instead (operator
+            // correction 2026-06-10).
             <span
-              className="break-all font-semibold text-muted-foreground/60 duration-300 group-hover:text-primary/80"
+              className="break-all font-semibold duration-300"
               style={{
+                color: '#15243B',
                 fontSize: `max(min(4rem, ${(100 / signature.typedSignature.length / 2).toFixed(4)}cqw), 1.875rem)`,
               }}
             >
@@ -169,8 +174,9 @@ const SigningCardContent = ({ className, name, signature }: SigningCardContentPr
           ))
           .otherwise(() => (
             <span
-              className="break-all font-semibold text-muted-foreground/60 duration-300 group-hover:text-primary/80"
+              className="break-all font-semibold duration-300"
               style={{
+                color: '#15243B',
                 fontSize: `max(min(4rem, ${(100 / name.length / 2).toFixed(4)}cqw), 1.875rem)`,
               }}
             >

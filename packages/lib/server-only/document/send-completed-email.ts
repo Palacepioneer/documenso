@@ -165,6 +165,15 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
 
   const completedEmailAttachments = completedDocumentEmailAttachments;
 
+  // Jess fork: count-aware subject — "All signed" reads wrong when there was
+  // only ever one signer (operator correction 2026-06-10).
+  const requiredSignerCount = envelope.recipients.filter((recipient) => recipient.role === 'SIGNER').length;
+
+  const completedEmailSubject =
+    requiredSignerCount === 1
+      ? msg`Signed — "${envelope.title}" is complete`
+      : msg`All signed — "${envelope.title}" is complete`;
+
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
 
   let documentOwnerDownloadLink = `${NEXT_PUBLIC_WEBAPP_URL()}${formatDocumentsPath(
@@ -225,7 +234,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       replyTo: replyToEmail,
       subject: envelope.documentMeta?.subject
         ? renderCustomEmailTemplate(envelope.documentMeta.subject, ownerEmailTemplate)
-        : i18n._(msg`All signed — "${envelope.title}" is complete`),
+        : i18n._(completedEmailSubject),
       html,
       text,
       attachments: completedEmailAttachments,
@@ -301,7 +310,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         // direct-template only, leaving recipients with "Signing Complete!").
         subject: envelope.documentMeta?.subject
           ? renderCustomEmailTemplate(envelope.documentMeta.subject, customEmailTemplate)
-          : i18n._(msg`All signed — "${envelope.title}" is complete`),
+          : i18n._(completedEmailSubject),
         html,
         text,
         attachments: completedEmailAttachments,

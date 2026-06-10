@@ -65,22 +65,32 @@ export const TemplateDocumentCompleted = ({
         </Row>
       </Section>
 
+      {/* Recipient-count-aware copy: "All signed" implies a crowd — for a
+          single-signer envelope it reads wrong (operator correction 2026-06-10). */}
       <Text
         className="my-0 text-center font-semibold text-xs tracking-[0.12em]"
         style={{ color: JESS_COLORS.goldDark, textTransform: 'uppercase' }}
       >
-        <Trans>All signed</Trans>
+        {signers && signers.length === 1 ? <Trans>Signed</Trans> : <Trans>All signed</Trans>}
       </Text>
 
       <Text
         className="mx-auto mt-2 mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
         style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
       >
-        <Trans>
-          “{docDisplayName}”
-          <br />
-          is fully signed
-        </Trans>
+        {signers && signers.length === 1 ? (
+          <Trans>
+            “{docDisplayName}”
+            <br />
+            has been signed
+          </Trans>
+        ) : (
+          <Trans>
+            “{docDisplayName}”
+            <br />
+            is fully signed
+          </Trans>
+        )}
       </Text>
 
       {customBody ? (
@@ -89,7 +99,13 @@ export const TemplateDocumentCompleted = ({
         </Section>
       ) : (
         <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
-          {hasAttachments ? (
+          {signers && signers.length === 1 ? (
+            hasAttachments ? (
+              <Trans>Signed and sealed — your copy's attached. — Jess</Trans>
+            ) : (
+              <Trans>Signed and sealed — your final copy is ready below. — Jess</Trans>
+            )
+          ) : hasAttachments ? (
             <Trans>All signed — your copy's attached. — Jess</Trans>
           ) : (
             <Trans>All signed — your final copy is ready below. — Jess</Trans>
