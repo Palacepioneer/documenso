@@ -10,6 +10,8 @@ export type DocumentPendingEmailTemplateProps = Partial<TemplateDocumentPendingP
 export const DocumentPendingEmailTemplate = ({
   documentName = 'Open Source Pledge.pdf',
   assetBaseUrl = 'http://localhost:3002',
+  signedCount,
+  totalCount,
 }: DocumentPendingEmailTemplateProps) => {
   const { _ } = useLingui();
 
@@ -17,7 +19,12 @@ export const DocumentPendingEmailTemplate = ({
 
   return (
     <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>
-      <TemplateDocumentPending documentName={documentName} assetBaseUrl={assetBaseUrl} />
+      <TemplateDocumentPending
+        documentName={documentName}
+        assetBaseUrl={assetBaseUrl}
+        signedCount={signedCount}
+        totalCount={totalCount}
+      />
     </TemplateEmailShell>
   );
 };

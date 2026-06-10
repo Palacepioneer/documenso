@@ -7,6 +7,7 @@ import { TemplateEmailShell } from '../template-components/template-email-shell'
 
 export type DocumentCompletedEmailTemplateProps = Partial<TemplateDocumentCompletedProps> & {
   customBody?: string;
+  hasAttachments?: boolean;
 };
 
 export const DocumentCompletedEmailTemplate = ({
@@ -14,6 +15,7 @@ export const DocumentCompletedEmailTemplate = ({
   documentName = 'Open Source Pledge.pdf',
   assetBaseUrl = 'http://localhost:3002',
   customBody,
+  hasAttachments,
 }: DocumentCompletedEmailTemplateProps) => {
   const { _ } = useLingui();
 
@@ -26,6 +28,7 @@ export const DocumentCompletedEmailTemplate = ({
         documentName={documentName}
         assetBaseUrl={assetBaseUrl}
         customBody={customBody}
+        hasAttachments={hasAttachments}
       />
     </TemplateEmailShell>
   );

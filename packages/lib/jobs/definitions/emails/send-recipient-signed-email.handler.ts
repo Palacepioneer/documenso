@@ -2,7 +2,7 @@ import { mailer } from '@documenso/email/mailer';
 import { DocumentRecipientSignedEmailTemplate } from '@documenso/email/templates/document-recipient-signed';
 import { prisma } from '@documenso/prisma';
 import { msg } from '@lingui/core/macro';
-import { EnvelopeType } from '@prisma/client';
+import { EnvelopeType, RecipientRole, SigningStatus } from '@prisma/client';
 import { createElement } from 'react';
 
 import { getI18nInstance } from '../../../client-only/providers/i18n-server';
@@ -94,8 +94,25 @@ export const run = async ({ payload, io }: { payload: TSendRecipientSignedEmailJ
 
   const i18n = await getI18nInstance(emailLanguage);
 
-  // Jess fork: give the owner a CTA into the document (the upstream email had none).
+  // Jess fork: give the owner a CTA into the document (the upstream email had
+  // none) and a live signing-progress count.
   const documentLink = `${NEXT_PUBLIC_WEBAPP_URL()}${formatDocumentsPath(envelope.team?.url)}/${envelope.id}`;
+
+  const [signedCount, totalCount] = await Promise.all([
+    prisma.recipient.count({
+      where: {
+        envelopeId: envelope.id,
+        role: { not: RecipientRole.CC },
+        signingStatus: SigningStatus.SIGNED,
+      },
+    }),
+    prisma.recipient.count({
+      where: {
+        envelopeId: envelope.id,
+        role: { not: RecipientRole.CC },
+      },
+    }),
+  ]);
 
   const template = createElement(DocumentRecipientSignedEmailTemplate, {
     documentName: envelope.title,
@@ -103,6 +120,8 @@ export const run = async ({ payload, io }: { payload: TSendRecipientSignedEmailJ
     recipientEmail,
     assetBaseUrl,
     documentLink,
+    signedCount,
+    totalCount,
   });
 
   await io.runTask('send-recipient-signed-email', async () => {

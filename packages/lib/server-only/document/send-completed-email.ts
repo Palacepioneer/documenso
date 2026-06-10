@@ -128,6 +128,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       documentName: envelope.title,
       assetBaseUrl,
       downloadLink: documentOwnerDownloadLink,
+      hasAttachments: completedDocumentEmailAttachments.length > 0,
     });
 
     const [html, text] = await Promise.all([
@@ -196,6 +197,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         documentName: envelope.title,
         assetBaseUrl,
         downloadLink: recipient.email === owner.email ? documentOwnerDownloadLink : downloadLink,
+        hasAttachments: completedDocumentEmailAttachments.length > 0,
         customBody:
           isDirectTemplate && envelope.documentMeta?.message
             ? renderCustomEmailTemplate(envelope.documentMeta.message, customEmailTemplate)

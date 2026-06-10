@@ -10,6 +10,8 @@ export interface DocumentRecipientSignedEmailTemplateProps {
   recipientEmail?: string;
   assetBaseUrl?: string;
   documentLink?: string;
+  signedCount?: number;
+  totalCount?: number;
 }
 
 export const DocumentRecipientSignedEmailTemplate = ({
@@ -18,6 +20,8 @@ export const DocumentRecipientSignedEmailTemplate = ({
   recipientEmail = 'lucas@documenso.com',
   assetBaseUrl = 'http://localhost:3002',
   documentLink,
+  signedCount,
+  totalCount,
 }: DocumentRecipientSignedEmailTemplateProps) => {
   const { _ } = useLingui();
 
@@ -33,6 +37,8 @@ export const DocumentRecipientSignedEmailTemplate = ({
         recipientEmail={recipientEmail}
         assetBaseUrl={assetBaseUrl}
         documentLink={documentLink}
+        signedCount={signedCount}
+        totalCount={totalCount}
       />
     </TemplateEmailShell>
   );

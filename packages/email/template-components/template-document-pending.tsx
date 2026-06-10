@@ -7,9 +7,13 @@ import { TemplateStatusBadge } from './template-status-badge';
 export interface TemplateDocumentPendingProps {
   documentName: string;
   assetBaseUrl: string;
+  signedCount?: number;
+  totalCount?: number;
 }
 
-export const TemplateDocumentPending = ({ documentName }: TemplateDocumentPendingProps) => {
+export const TemplateDocumentPending = ({ documentName, signedCount, totalCount }: TemplateDocumentPendingProps) => {
+  const showProgress = typeof signedCount === 'number' && typeof totalCount === 'number' && totalCount > 1;
+
   const docDisplayName = displayDocumentName(documentName);
 
   return (
@@ -27,10 +31,17 @@ export const TemplateDocumentPending = ({ documentName }: TemplateDocumentPendin
         className="mx-auto mt-4 mb-4 max-w-[85%] text-center text-base leading-relaxed"
         style={{ color: JESS_COLORS.muted }}
       >
-        <Trans>
-          your part of “{docDisplayName}” is done. we're waiting on the other signers — you'll get
-          the final copy as soon as everyone has signed.
-        </Trans>
+        {showProgress ? (
+          <Trans>
+            your part of “{docDisplayName}” is done — that's {signedCount} of {totalCount}{' '}
+            signatures in. you'll get the final copy as soon as everyone has signed.
+          </Trans>
+        ) : (
+          <Trans>
+            your part of “{docDisplayName}” is done. we're waiting on the other signers — you'll
+            get the final copy as soon as everyone has signed.
+          </Trans>
+        )}
       </Text>
     </Section>
   );

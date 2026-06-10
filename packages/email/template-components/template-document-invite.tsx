@@ -111,6 +111,12 @@ export const TemplateDocumentInvite = ({
             .exhaustive()}
         </Button>
       </Section>
+
+      {!customBody && (
+        <Text className="mt-0 mb-2 text-center text-sm" style={{ color: JESS_COLORS.muted }}>
+          <Trans>questions? just reply to this email.</Trans>
+        </Text>
+      )}
     </Section>
   );
 };

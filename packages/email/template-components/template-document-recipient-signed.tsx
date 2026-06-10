@@ -10,6 +10,8 @@ export interface TemplateDocumentRecipientSignedProps {
   recipientEmail: string;
   assetBaseUrl: string;
   documentLink?: string;
+  signedCount?: number;
+  totalCount?: number;
 }
 
 export const TemplateDocumentRecipientSigned = ({
@@ -17,7 +19,11 @@ export const TemplateDocumentRecipientSigned = ({
   recipientName,
   recipientEmail,
   documentLink,
+  signedCount,
+  totalCount,
 }: TemplateDocumentRecipientSignedProps) => {
+  const showProgress = typeof signedCount === 'number' && typeof totalCount === 'number' && totalCount > 1;
+
   const recipientReference = recipientName || recipientEmail;
 
   const docDisplayName = displayDocumentName(documentName);
@@ -37,7 +43,14 @@ export const TemplateDocumentRecipientSigned = ({
       </Text>
 
       <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
-        <Trans>their part's done — you'll get the final copy once everyone has signed.</Trans>
+        {showProgress ? (
+          <Trans>
+            that's {signedCount} of {totalCount} signatures in — you'll get the final copy when
+            everyone's signed.
+          </Trans>
+        ) : (
+          <Trans>their part's done — you'll get the final copy once everyone has signed.</Trans>
+        )}
       </Text>
 
       {documentLink && (

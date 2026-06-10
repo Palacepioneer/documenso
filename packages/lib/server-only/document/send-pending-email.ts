@@ -2,7 +2,7 @@ import { mailer } from '@documenso/email/mailer';
 import { DocumentPendingEmailTemplate } from '@documenso/email/templates/document-pending';
 import { prisma } from '@documenso/prisma';
 import { msg } from '@lingui/core/macro';
-import { EnvelopeType } from '@prisma/client';
+import { EnvelopeType, RecipientRole, SigningStatus } from '@prisma/client';
 import { createElement } from 'react';
 
 import { getI18nInstance } from '../../client-only/providers/i18n-server';
@@ -73,9 +73,28 @@ export const sendPendingEmail = async ({ id, recipientId }: SendPendingEmailOpti
 
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
 
+  // Jess fork: live signing-progress count for the "waiting on others" email.
+  const [signedCount, totalCount] = await Promise.all([
+    prisma.recipient.count({
+      where: {
+        envelopeId: envelope.id,
+        role: { not: RecipientRole.CC },
+        signingStatus: SigningStatus.SIGNED,
+      },
+    }),
+    prisma.recipient.count({
+      where: {
+        envelopeId: envelope.id,
+        role: { not: RecipientRole.CC },
+      },
+    }),
+  ]);
+
   const template = createElement(DocumentPendingEmailTemplate, {
     documentName: envelope.title,
     assetBaseUrl,
+    signedCount,
+    totalCount,
   });
 
   const [html, text] = await Promise.all([
