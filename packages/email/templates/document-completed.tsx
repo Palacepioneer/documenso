@@ -16,6 +16,7 @@ export const DocumentCompletedEmailTemplate = ({
   assetBaseUrl = 'http://localhost:3002',
   customBody,
   hasAttachments,
+  signers,
 }: DocumentCompletedEmailTemplateProps) => {
   const { _ } = useLingui();
 
@@ -29,6 +30,7 @@ export const DocumentCompletedEmailTemplate = ({
         assetBaseUrl={assetBaseUrl}
         customBody={customBody}
         hasAttachments={hasAttachments}
+        signers={signers}
       />
     </TemplateEmailShell>
   );

@@ -2,7 +2,7 @@ import { mailer } from '@documenso/email/mailer';
 import { DocumentCompletedEmailTemplate } from '@documenso/email/templates/document-completed';
 import { prisma } from '@documenso/prisma';
 import { msg } from '@lingui/core/macro';
-import { DocumentSource, EnvelopeType } from '@prisma/client';
+import { DocumentSource, EnvelopeType, SigningStatus } from '@prisma/client';
 import { createElement } from 'react';
 
 import { getI18nInstance } from '../../client-only/providers/i18n-server';
@@ -41,7 +41,15 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         },
       },
       documentMeta: true,
-      recipients: true,
+      recipients: {
+        include: {
+          fields: {
+            include: {
+              signature: true,
+            },
+          },
+        },
+      },
       user: {
         select: {
           id: true,
@@ -79,7 +87,12 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
 
   const { user: owner } = envelope;
 
-  const completedDocumentEmailAttachments = await Promise.all(
+  // Jess fork: attach the sealed PDFs with a size guard — inboxes bounce or
+  // clip oversized mail, so anything pushing the email past ~7MB is skipped
+  // and the recipient keeps the download CTA instead.
+  const MAX_COMPLETED_EMAIL_ATTACHMENT_BYTES = 7 * 1024 * 1024;
+
+  let completedDocumentEmailAttachments = await Promise.all(
     envelope.envelopeItems.map(async (envelopeItem) => {
       const file = await getFileServerSide(envelopeItem.documentData);
 
@@ -93,6 +106,81 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       };
     }),
   );
+
+  completedDocumentEmailAttachments = completedDocumentEmailAttachments.filter(
+    (attachment) => attachment.content.length <= MAX_COMPLETED_EMAIL_ATTACHMENT_BYTES,
+  );
+
+  const totalAttachmentBytes = completedDocumentEmailAttachments.reduce(
+    (total, attachment) => total + attachment.content.length,
+    0,
+  );
+
+  if (totalAttachmentBytes > MAX_COMPLETED_EMAIL_ATTACHMENT_BYTES) {
+    completedDocumentEmailAttachments = [];
+  }
+
+  // Jess fork: "signed by" ceremony block — each signer's actual signature.
+  // Drawn signatures travel as small inline CID images (Gmail strips data
+  // URIs); typed signatures render as text in the template.
+  const signatureCidFor = (recipientId: number) => `jess-signature-${recipientId}`;
+
+  const dataUriToImage = (dataUri: string) => {
+    const match = dataUri.match(/^data:(image\/[a-z+.-]+);base64,(.*)$/i);
+
+    if (!match) {
+      return null;
+    }
+
+    return { contentType: match[1], content: Buffer.from(match[2], 'base64') };
+  };
+
+  const documentSigners = envelope.recipients
+    .filter((recipient) => recipient.signingStatus === SigningStatus.SIGNED)
+    .flatMap((recipient) => {
+      const signature = recipient.fields
+        .map((field) => field.signature)
+        .find((fieldSignature) => fieldSignature?.signatureImageAsBase64 || fieldSignature?.typedSignature);
+
+      if (!signature) {
+        return [];
+      }
+
+      const drawnImage = signature.signatureImageAsBase64 ? dataUriToImage(signature.signatureImageAsBase64) : null;
+
+      return [
+        {
+          recipientId: recipient.id,
+          name: recipient.name,
+          email: recipient.email,
+          drawnImage,
+          typedSignature: signature.typedSignature ?? undefined,
+        },
+      ];
+    });
+
+  const signatureAttachments = documentSigners.flatMap((signer) =>
+    signer.drawnImage
+      ? [
+          {
+            filename: `signature-${signer.recipientId}.png`,
+            content: signer.drawnImage.content,
+            contentType: signer.drawnImage.contentType,
+            cid: signatureCidFor(signer.recipientId),
+            contentDisposition: 'inline' as const,
+          },
+        ]
+      : [],
+  );
+
+  const completedEmailSigners = documentSigners.map((signer) => ({
+    name: signer.name,
+    email: signer.email,
+    signatureImageSrc: signer.drawnImage ? `cid:${signatureCidFor(signer.recipientId)}` : undefined,
+    typedSignature: signer.typedSignature,
+  }));
+
+  const completedEmailAttachments = [...completedDocumentEmailAttachments, ...signatureAttachments];
 
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
 
@@ -129,6 +217,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       assetBaseUrl,
       downloadLink: documentOwnerDownloadLink,
       hasAttachments: completedDocumentEmailAttachments.length > 0,
+      signers: completedEmailSigners,
     });
 
     const [html, text] = await Promise.all([
@@ -156,7 +245,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         : i18n._(msg`all signed — "${envelope.title}" is complete`),
       html,
       text,
-      attachments: completedDocumentEmailAttachments,
+      attachments: completedEmailAttachments,
     });
 
     await prisma.documentAuditLog.create({
@@ -198,6 +287,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
         assetBaseUrl,
         downloadLink: recipient.email === owner.email ? documentOwnerDownloadLink : downloadLink,
         hasAttachments: completedDocumentEmailAttachments.length > 0,
+        signers: completedEmailSigners,
         customBody:
           isDirectTemplate && envelope.documentMeta?.message
             ? renderCustomEmailTemplate(envelope.documentMeta.message, customEmailTemplate)
@@ -231,7 +321,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
           : i18n._(msg`all signed — "${envelope.title}" is complete`),
         html,
         text,
-        attachments: completedDocumentEmailAttachments,
+        attachments: completedEmailAttachments,
       });
 
       await prisma.documentAuditLog.create({

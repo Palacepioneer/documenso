@@ -1,8 +1,17 @@
 import { Trans } from '@lingui/react/macro';
 
-import { Button, Column, Row, Section, Text } from '../components';
+import { Button, Column, Img, Row, Section, Text } from '../components';
 import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
 import { TemplateCustomMessageBody } from './template-custom-message-body';
+
+export interface TemplateDocumentCompletedSigner {
+  name: string;
+  email: string;
+  /** Drawn signature (inline CID image in real sends, data URI in previews). */
+  signatureImageSrc?: string;
+  /** Typed signature, rendered as text. */
+  typedSignature?: string;
+}
 
 export interface TemplateDocumentCompletedProps {
   downloadLink: string;
@@ -10,6 +19,7 @@ export interface TemplateDocumentCompletedProps {
   assetBaseUrl: string;
   customBody?: string;
   hasAttachments?: boolean;
+  signers?: TemplateDocumentCompletedSigner[];
 }
 
 export const TemplateDocumentCompleted = ({
@@ -17,6 +27,7 @@ export const TemplateDocumentCompleted = ({
   documentName,
   customBody,
   hasAttachments,
+  signers,
 }: TemplateDocumentCompletedProps) => {
   const docDisplayName = displayDocumentName(documentName);
 
@@ -84,6 +95,47 @@ export const TemplateDocumentCompleted = ({
             <Trans>everyone's in — your final copy is ready below.</Trans>
           )}
         </Text>
+      )}
+
+      {signers && signers.length > 0 && (
+        <Section className="mx-auto mt-7 max-w-[85%]">
+          <Text
+            className="my-0 text-center font-semibold text-xs tracking-[0.12em]"
+            style={{ color: JESS_COLORS.goldDark, textTransform: 'uppercase' }}
+          >
+            <Trans>signed by</Trans>
+          </Text>
+
+          {signers.map((signer, index) => (
+            <Section
+              key={index}
+              className="mt-2 rounded-md px-4 py-3 text-center"
+              style={{ backgroundColor: JESS_COLORS.white, border: '1px solid #E5E0D5' }}
+              {...({ bgcolor: JESS_COLORS.white } as object)}
+            >
+              {signer.signatureImageSrc ? (
+                <Img
+                  src={signer.signatureImageSrc}
+                  alt={`${signer.name} — signature`}
+                  height={40}
+                  className="mx-auto"
+                  style={{ height: '40px', maxWidth: '70%' }}
+                />
+              ) : signer.typedSignature ? (
+                <Text
+                  className="my-0 text-center text-[20px] leading-snug"
+                  style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF, fontStyle: 'italic' }}
+                >
+                  {signer.typedSignature}
+                </Text>
+              ) : null}
+
+              <Text className="mt-1 mb-0 text-center text-xs" style={{ color: JESS_COLORS.muted }}>
+                {signer.name ? `${signer.name} · ${signer.email}` : signer.email}
+              </Text>
+            </Section>
+          ))}
+        </Section>
       )}
 
       <Section className="mt-8 mb-4 text-center">
