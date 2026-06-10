@@ -16,9 +16,7 @@ import { match } from 'ts-pattern';
 
 import { EnvelopeDownloadDialog } from '~/components/dialogs/envelope-download-dialog';
 import { useEmbedSigningContext } from '~/components/embed/embed-signing-context';
-import { BrandingLogo } from '~/components/general/branding-logo';
 
-import { BrandingLogoIcon } from '../branding-logo-icon';
 import { DocumentSigningRejectDialog } from '../document-signing/document-signing-reject-dialog';
 import { useRequiredEnvelopeSigningContext } from '../document-signing/envelope-signing-provider';
 import { EnvelopeSignerCompleteDialog } from './envelope-signing-complete-dialog';
@@ -32,19 +30,18 @@ export const EnvelopeSignerHeader = () => {
     <nav className="embed--DocumentWidgetHeader flex max-w-screen flex-row justify-between border-border border-b bg-background px-4 py-3 md:px-6">
       {/* Left side - Logo and title */}
       <div className="flex min-w-0 flex-1 items-center space-x-2 md:w-auto md:flex-none">
-        {!isEmbedSigning && (
+        {isEmbedSigning ? (
+          <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto flex-shrink-0" />
+        ) : (
           <Link to="/" className="flex-shrink-0">
             {envelopeData.settings.brandingEnabled && envelopeData.settings.brandingLogo ? (
               <img
                 src={`/api/branding/logo/team/${envelope.teamId}`}
                 alt={`${envelope.team.name}'s Logo`}
-                className="h-6 w-auto"
+                className="h-10 w-auto"
               />
             ) : (
-              <>
-                <BrandingLogo className="hidden h-6 w-auto md:block" />
-                <BrandingLogoIcon className="h-6 w-auto md:hidden" />
-              </>
+              <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto" />
             )}
           </Link>
         )}

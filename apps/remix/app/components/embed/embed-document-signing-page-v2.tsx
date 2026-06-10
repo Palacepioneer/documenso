@@ -178,6 +178,13 @@ export const EmbedSignDocumentV2ClientPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowWhitelabelling]);
 
+  // Jess instance: embeds always render light — dark mode inverts signature ink
+  // and breaks the brand palette contrast guarantees.
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('dark-mode-disabled');
+  }, []);
+
   useEffect(() => {
     if (hasFinishedInit) {
       onDocumentReady();

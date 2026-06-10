@@ -194,20 +194,10 @@ export const EnvelopeDownloadDialog = ({
                     </p>
                   </div>
 
+                  {/* Jess fork (P0, 2026-06-10): the signed/sealed PDF is the primary,
+                      FIRST download; the unsigned upload is explicitly labelled so
+                      nobody grabs the blank version of an executed document by mistake. */}
                   <div className="flex flex-shrink-0 items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-xs"
-                      onClick={async () => onDownload(item, 'original')}
-                      loading={isDownloadingState[generateDownloadKey(item.id, 'original')]}
-                    >
-                      {!isDownloadingState[generateDownloadKey(item.id, 'original')] && (
-                        <DownloadIcon className="mr-2 h-4 w-4" />
-                      )}
-                      <Trans context="Original document (adjective)">Original</Trans>
-                    </Button>
-
                     {secondaryDownload && (
                       <Button
                         variant="default"
@@ -222,6 +212,19 @@ export const EnvelopeDownloadDialog = ({
                         {secondaryDownload.label}
                       </Button>
                     )}
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs"
+                      onClick={async () => onDownload(item, 'original')}
+                      loading={isDownloadingState[generateDownloadKey(item.id, 'original')]}
+                    >
+                      {!isDownloadingState[generateDownloadKey(item.id, 'original')] && (
+                        <DownloadIcon className="mr-2 h-4 w-4" />
+                      )}
+                      <Trans context="Original document (adjective)">Original (unsigned)</Trans>
+                    </Button>
                   </div>
                 </div>
               ))}

@@ -311,6 +311,13 @@ export const EmbedDirectTemplateClientPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Jess instance: embeds always render light — dark mode inverts signature ink
+  // and breaks the brand palette contrast guarantees.
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('dark-mode-disabled');
+  }, []);
+
   useEffect(() => {
     if (hasFinishedInit && hasDocumentLoaded && window.parent) {
       window.parent.postMessage(
@@ -343,8 +350,10 @@ export const EmbedDirectTemplateClientPage = ({
     <div className="embed--Root relative mx-auto flex min-h-[100dvh] max-w-screen-lg flex-col items-center justify-center p-6">
       {(!hasFinishedInit || !hasDocumentLoaded) && <EmbedClientLoading />}
 
-      <div className="embed--Actions mb-4 flex w-full flex-row-reverse items-baseline justify-between">
+      <div className="embed--Actions mb-4 flex w-full flex-row-reverse items-center justify-between">
         <DocumentSigningAttachmentsPopover envelopeId={envelopeId} token={recipient.token} />
+
+        <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto md:h-12" />
       </div>
 
       <div className="relative flex w-full flex-col gap-x-6 gap-y-12 md:flex-row">
@@ -402,7 +411,7 @@ export const EmbedDirectTemplateClientPage = ({
             </div>
 
             <div className="hidden group-data-[expanded]/document-widget:block md:block">
-              <p className="mt-2 text-muted-foreground text-sm">
+              <p className="mt-2 text-foreground/80 text-sm">
                 <Trans>Sign the document to complete the process.</Trans>
               </p>
 

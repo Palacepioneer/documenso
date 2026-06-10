@@ -5,6 +5,7 @@ import { i18n } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { ChevronLeft } from 'lucide-react';
+import { useEffect } from 'react';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -12,7 +13,7 @@ import type { Route } from './+types/_layout';
 
 export function meta() {
   return [
-    { title: i18n._(msg`Sign Document - Documenso`) },
+    { title: i18n._(msg`Sign Document - Jess Intelligence`) },
     { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
   ];
 }
@@ -26,6 +27,13 @@ export function meta() {
 export default function RecipientLayout({ matches }: Route.ComponentProps) {
   const { sessionData } = useOptionalSession();
 
+  // Recipient-facing surfaces always render in light mode: dark mode inverts
+  // drawn-signature ink and breaks the brand palette contrast guarantees.
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('dark-mode-disabled');
+  }, []);
+
   // Hide the header for signing routes.
   const hideHeader = matches.some(
     (match) =>
@@ -33,8 +41,15 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
   );
 
   return (
-    <div className="min-h-screen">
-      {!hideHeader && sessionData?.user && <AuthenticatedHeader />}
+    <div className="dark-mode-disabled min-h-screen">
+      {!hideHeader &&
+        (sessionData?.user ? (
+          <AuthenticatedHeader />
+        ) : (
+          <header className="px-4 pt-6 md:px-8">
+            <img src="/branding/logo-jess.png" alt="Jess Intelligence" className="h-10 w-auto md:h-12" />
+          </header>
+        ))}
 
       <main
         className={cn({
