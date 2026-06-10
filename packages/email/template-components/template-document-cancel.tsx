@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/react/macro';
 
 import { Section, Text } from '../components';
-import { TemplateDocumentImage } from './template-document-image';
+import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
+import { TemplateStatusBadge } from './template-status-badge';
 
 export interface TemplateDocumentCancelProps {
   inviterName: string;
@@ -14,36 +15,49 @@ export interface TemplateDocumentCancelProps {
 export const TemplateDocumentCancel = ({
   inviterName,
   documentName,
-  assetBaseUrl,
   cancellationReason,
 }: TemplateDocumentCancelProps) => {
+  const docDisplayName = displayDocumentName(documentName);
+
   return (
-    <>
-      <TemplateDocumentImage className="mt-6" assetBaseUrl={assetBaseUrl} />
+    <Section className="mt-2">
+      <TemplateStatusBadge label="cancelled" tone="muted" className="mb-4" />
 
-      <Section>
-        <Text className="mx-auto mb-0 max-w-[80%] text-center font-semibold text-lg text-primary">
-          <Trans>
-            {inviterName} has cancelled the document
-            <br />"{documentName}"
-          </Trans>
-        </Text>
+      <Text
+        className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
+        style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
+      >
+        <Trans>
+          “{docDisplayName}”
+          <br />
+          was cancelled
+        </Trans>
+      </Text>
 
-        <Text className="my-1 text-center text-base text-slate-400">
-          <Trans>All signatures have been voided.</Trans>
-        </Text>
+      <Text
+        className="mx-auto mt-4 mb-4 max-w-[85%] text-center text-base leading-relaxed"
+        style={{ color: JESS_COLORS.muted }}
+      >
+        <Trans>
+          {inviterName} cancelled this document — all signatures are void and there's nothing you
+          need to do.
+        </Trans>
+      </Text>
 
-        <Text className="my-1 text-center text-base text-slate-400">
-          <Trans>You don't need to sign it anymore.</Trans>
-        </Text>
-
-        {cancellationReason && (
-          <Text className="mt-4 text-center text-base">
-            <Trans>Reason for cancellation: {cancellationReason}</Trans>
+      {cancellationReason && (
+        <Section
+          className="mx-auto mt-2 mb-4 max-w-[85%] rounded-lg bg-white p-4"
+          {...({ bgcolor: '#FFFFFF' } as object)}
+        >
+          <Text className="my-0 text-sm font-semibold" style={{ color: JESS_COLORS.muted }}>
+            <Trans>reason</Trans>
           </Text>
-        )}
-      </Section>
-    </>
+          <Text className="mt-1 mb-0 text-base leading-relaxed" style={{ color: JESS_COLORS.navy }}>
+            “{cancellationReason}”
+          </Text>
+        </Section>
+      )}
+    </Section>
   );
 };
 

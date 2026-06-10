@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/react/macro';
 
-import { Button, Column, Img, Section, Text } from '../components';
-import { TemplateDocumentImage } from './template-document-image';
+import { Button, Section, Text } from '../components';
+import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
+import { TemplateCustomMessageBody } from './template-custom-message-body';
+import { TemplateStatusBadge } from './template-status-badge';
 
 export interface TemplateDocumentCompletedProps {
   downloadLink: string;
@@ -13,46 +15,45 @@ export interface TemplateDocumentCompletedProps {
 export const TemplateDocumentCompleted = ({
   downloadLink,
   documentName,
-  assetBaseUrl,
   customBody,
 }: TemplateDocumentCompletedProps) => {
-  const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
-  };
+  const docDisplayName = displayDocumentName(documentName);
 
   return (
-    <>
-      <TemplateDocumentImage className="mt-6" assetBaseUrl={assetBaseUrl} />
+    <Section className="mt-2">
+      <TemplateStatusBadge label="all signed" tone="gold" className="mb-4" />
 
-      <Section>
-        <Section className="mb-4">
-          <Column align="center">
-            <Text className="font-semibold text-[#7AC455] text-base">
-              <Img src={getAssetUrl('/static/completed.png')} className="-mt-0.5 mr-2 inline h-7 w-7 align-middle" />
-              <Trans>Completed</Trans>
-            </Text>
-          </Column>
+      <Text
+        className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
+        style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
+      >
+        <Trans>
+          “{docDisplayName}”
+          <br />
+          is fully signed
+        </Trans>
+      </Text>
+
+      {customBody ? (
+        <Section className="mx-auto mt-6 max-w-[85%]">
+          <TemplateCustomMessageBody text={customBody} />
         </Section>
-
-        <Text className="mb-0 text-center font-semibold text-lg text-primary">
-          {customBody || <Trans>“{documentName}” was signed by all signers</Trans>}
+      ) : (
+        <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
+          <Trans>everyone's in — your final copy is ready below.</Trans>
         </Text>
+      )}
 
-        <Text className="my-1 text-center text-base text-slate-400">
-          <Trans>Continue by downloading the document.</Trans>
-        </Text>
-
-        <Section className="mt-8 mb-6 text-center">
-          <Button
-            className="rounded-lg border border-slate-200 border-solid px-4 py-2 text-center font-medium text-black text-sm no-underline"
-            href={downloadLink}
-          >
-            <Img src={getAssetUrl('/static/download.png')} className="mr-2 mb-0.5 inline h-5 w-5 align-middle" />
-            <Trans>Download</Trans>
-          </Button>
-        </Section>
+      <Section className="mt-8 mb-4 text-center">
+        <Button
+          className="inline-flex items-center justify-center rounded-lg px-8 py-3.5 text-center font-semibold text-base no-underline"
+          style={{ backgroundColor: JESS_COLORS.gold, color: JESS_COLORS.navy }}
+          href={downloadLink}
+        >
+          <Trans>download your copy</Trans>
+        </Button>
       </Section>
-    </>
+    </Section>
   );
 };
 

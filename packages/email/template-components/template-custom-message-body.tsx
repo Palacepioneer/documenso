@@ -1,9 +1,15 @@
 import React from 'react';
 
+import { JESS_COLORS } from '../jess-brand';
+
 export type TemplateCustomMessageBodyProps = {
   text?: string;
 };
 
+/**
+ * The sender's note (meta.message). In the Jess fork this renders IN-CARD as
+ * the hero body — navy ink at full size, not below-card fine print.
+ */
 export const TemplateCustomMessageBody = ({ text }: TemplateCustomMessageBodyProps) => {
   if (!text) {
     return null;
@@ -18,7 +24,11 @@ export const TemplateCustomMessageBody = ({ text }: TemplateCustomMessageBodyPro
   const paragraphs = normalized.split('\n\n');
 
   return paragraphs.map((paragraph, i) => (
-    <p key={`p-${i}`} className="whitespace-pre-line break-words font-sans text-base text-slate-400">
+    <p
+      key={`p-${i}`}
+      className="my-2 whitespace-pre-line break-words text-left font-sans text-base leading-relaxed"
+      style={{ color: JESS_COLORS.navy }}
+    >
       {paragraph.split('\n').map((line, j) => (
         <React.Fragment key={`line-${i}-${j}`}>
           {j > 0 && <br />}

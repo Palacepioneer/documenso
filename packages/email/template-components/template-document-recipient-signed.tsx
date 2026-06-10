@@ -1,52 +1,61 @@
 import { Trans } from '@lingui/react/macro';
 
-import { Column, Img, Section, Text } from '../components';
-import { TemplateDocumentImage } from './template-document-image';
+import { Button, Section, Text } from '../components';
+import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
+import { TemplateStatusBadge } from './template-status-badge';
 
 export interface TemplateDocumentRecipientSignedProps {
   documentName: string;
   recipientName: string;
   recipientEmail: string;
   assetBaseUrl: string;
+  documentLink?: string;
 }
 
 export const TemplateDocumentRecipientSigned = ({
   documentName,
   recipientName,
   recipientEmail,
-  assetBaseUrl,
+  documentLink,
 }: TemplateDocumentRecipientSignedProps) => {
-  const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
-  };
-
   const recipientReference = recipientName || recipientEmail;
 
+  const docDisplayName = displayDocumentName(documentName);
+
   return (
-    <>
-      <TemplateDocumentImage className="mt-6" assetBaseUrl={assetBaseUrl} />
+    <Section className="mt-2">
+      <TemplateStatusBadge label="signed" tone="gold" className="mb-4" />
 
-      <Section>
-        <Section className="mb-4">
-          <Column align="center">
-            <Text className="font-semibold text-[#7AC455] text-base">
-              <Img src={getAssetUrl('/static/completed.png')} className="-mt-0.5 mr-2 inline h-7 w-7 align-middle" />
-              <Trans>Completed</Trans>
-            </Text>
-          </Column>
+      <Text
+        className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
+        style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
+      >
+        <Trans>
+          {recipientReference} signed
+          <br />“{docDisplayName}”
+        </Trans>
+      </Text>
+
+      <Text className="mt-4 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
+        <Trans>their part's done — you'll get the final copy once everyone has signed.</Trans>
+      </Text>
+
+      {documentLink && (
+        <Section className="mt-8 mb-4 text-center">
+          <Button
+            className="inline-flex items-center justify-center rounded-lg border border-solid px-8 py-3 text-center font-semibold text-base no-underline"
+            style={{
+              borderColor: JESS_COLORS.navy,
+              color: JESS_COLORS.navy,
+              backgroundColor: 'transparent',
+            }}
+            href={documentLink}
+          >
+            <Trans>view the document</Trans>
+          </Button>
         </Section>
-
-        <Text className="mb-0 text-center font-semibold text-lg text-primary">
-          <Trans>
-            {recipientReference} has signed "{documentName}"
-          </Trans>
-        </Text>
-
-        <Text className="mx-auto mt-1 mb-6 max-w-[80%] text-center text-base text-slate-400">
-          <Trans>{recipientReference} has completed signing the document.</Trans>
-        </Text>
-      </Section>
-    </>
+      )}
+    </Section>
   );
 };
 

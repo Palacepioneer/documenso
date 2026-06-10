@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/react/macro';
 
-import { Container, Heading, Section, Text } from '../components';
+import { Section, Text } from '../components';
+import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
+import { TemplateStatusBadge } from './template-status-badge';
 
 interface TemplateDocumentRejectionConfirmedProps {
   recipientName: string;
@@ -10,38 +12,51 @@ interface TemplateDocumentRejectionConfirmedProps {
 }
 
 export function TemplateDocumentRejectionConfirmed({
-  recipientName,
   documentName,
   documentOwnerName,
   reason,
 }: TemplateDocumentRejectionConfirmedProps) {
+  const docDisplayName = displayDocumentName(documentName);
+
   return (
-    <Container>
-      <Section>
-        <Heading className="font-semibold text-2xl">
-          <Trans>Rejection Confirmed</Trans>
-        </Heading>
+    <Section className="mt-2">
+      <TemplateStatusBadge label="declined" tone="terracotta" className="mb-4" />
 
-        <Text className="text-base text-primary">
-          <Trans>
-            This email confirms that you have rejected the document{' '}
-            <strong className="font-bold">"{documentName}"</strong> sent by {documentOwnerName}.
-          </Trans>
-        </Text>
+      <Text
+        className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
+        style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
+      >
+        <Trans>
+          you declined
+          <br />“{docDisplayName}”
+        </Trans>
+      </Text>
 
-        {reason && (
-          <Text className="font-medium text-base text-slate-400">
-            <Trans>Rejection reason: {reason}</Trans>
+      {reason && (
+        <Section
+          className="mx-auto mt-6 max-w-[85%] rounded-lg bg-white p-4"
+          {...({ bgcolor: '#FFFFFF' } as object)}
+        >
+          <Text className="my-0 text-sm font-semibold" style={{ color: JESS_COLORS.muted }}>
+            <Trans>your reason</Trans>
           </Text>
-        )}
+          <Text className="mt-1 mb-0 text-base leading-relaxed" style={{ color: JESS_COLORS.navy }}>
+            “{reason}”
+          </Text>
+        </Section>
+      )}
 
-        <Text className="text-base">
-          <Trans>
-            The document owner has been notified of this rejection. No further action is required from you at this time.
-            The document owner may contact you with any questions regarding this rejection.
-          </Trans>
-        </Text>
-      </Section>
-    </Container>
+      <Text
+        className="mx-auto mt-6 mb-4 max-w-[85%] text-center text-base leading-relaxed"
+        style={{ color: JESS_COLORS.muted }}
+      >
+        <Trans>
+          {documentOwnerName} has been notified — nothing else is needed from you. if you change
+          your mind or have questions, just reply to this email.
+        </Trans>
+      </Text>
+    </Section>
   );
 }
+
+export default TemplateDocumentRejectionConfirmed;

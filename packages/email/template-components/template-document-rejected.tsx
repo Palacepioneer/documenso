@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/react/macro';
 
-import { Button, Heading, Text } from '../components';
+import { Button, Section, Text } from '../components';
+import { JESS_COLORS, JESS_SERIF, displayDocumentName } from '../jess-brand';
+import { TemplateStatusBadge } from './template-status-badge';
 
 export interface TemplateDocumentRejectedProps {
   documentName: string;
@@ -15,34 +17,51 @@ export function TemplateDocumentRejected({
   rejectionReason,
   documentUrl,
 }: TemplateDocumentRejectedProps) {
-  return (
-    <div className="mt-4">
-      <Heading className="mb-4 text-center font-semibold text-2xl text-slate-800">
-        <Trans>Document Rejected</Trans>
-      </Heading>
+  const docDisplayName = displayDocumentName(documentName);
 
-      <Text className="mb-4 text-base">
+  return (
+    <Section className="mt-2">
+      <TemplateStatusBadge label="declined" tone="terracotta" className="mb-4" />
+
+      <Text
+        className="mx-auto mb-0 max-w-[90%] text-center font-semibold text-[22px] leading-snug"
+        style={{ color: JESS_COLORS.navy, fontFamily: JESS_SERIF }}
+      >
         <Trans>
-          {signerName} has rejected the document "{documentName}".
+          {signerName} declined
+          <br />“{docDisplayName}”
         </Trans>
       </Text>
 
       {rejectionReason && (
-        <Text className="mb-4 text-base text-slate-400">
-          <Trans>Reason for rejection: {rejectionReason}</Trans>
-        </Text>
+        <Section
+          className="mx-auto mt-6 max-w-[85%] rounded-lg bg-white p-4"
+          {...({ bgcolor: '#FFFFFF' } as object)}
+        >
+          <Text className="my-0 text-sm font-semibold" style={{ color: JESS_COLORS.muted }}>
+            <Trans>their reason</Trans>
+          </Text>
+          <Text className="mt-1 mb-0 text-base leading-relaxed" style={{ color: JESS_COLORS.navy }}>
+            “{rejectionReason}”
+          </Text>
+        </Section>
       )}
 
-      <Text className="mb-6 text-base">
-        <Trans>You can view the document and its status by clicking the button below.</Trans>
+      <Text className="mt-6 mb-0 text-center text-base" style={{ color: JESS_COLORS.muted }}>
+        <Trans>you can reply to them directly, or open the document to adjust and resend.</Trans>
       </Text>
 
-      <Button
-        href={documentUrl}
-        className="inline-flex items-center justify-center rounded-lg bg-documenso-500 px-6 py-3 text-center font-medium text-black text-sm no-underline"
-      >
-        <Trans>View Document</Trans>
-      </Button>
-    </div>
+      <Section className="mt-8 mb-4 text-center">
+        <Button
+          className="inline-flex items-center justify-center rounded-lg px-8 py-3.5 text-center font-semibold text-base no-underline"
+          style={{ backgroundColor: JESS_COLORS.gold, color: JESS_COLORS.navy }}
+          href={documentUrl}
+        >
+          <Trans>view the document</Trans>
+        </Button>
+      </Section>
+    </Section>
   );
 }
+
+export default TemplateDocumentRejected;

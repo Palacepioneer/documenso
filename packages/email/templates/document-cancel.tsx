@@ -1,11 +1,9 @@
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 
-import { Body, Container, Head, Hr, Html, Img, Preview, Section } from '../components';
-import { useBranding } from '../providers/branding';
 import type { TemplateDocumentCancelProps } from '../template-components/template-document-cancel';
 import { TemplateDocumentCancel } from '../template-components/template-document-cancel';
-import { TemplateFooter } from '../template-components/template-footer';
+import { TemplateEmailShell } from '../template-components/template-email-shell';
 
 export type DocumentCancelEmailTemplateProps = Partial<TemplateDocumentCancelProps>;
 
@@ -17,47 +15,19 @@ export const DocumentCancelTemplate = ({
   cancellationReason,
 }: DocumentCancelEmailTemplateProps) => {
   const { _ } = useLingui();
-  const branding = useBranding();
 
-  const previewText = msg`${inviterName} has cancelled the document ${documentName}, you don't need to sign it anymore.`;
-
-  const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
-  };
+  const previewText = msg`${inviterName} cancelled ${documentName} — no signature needed anymore`;
 
   return (
-    <Html>
-      <Head />
-      <Preview>{_(previewText)}</Preview>
-
-      <Body className="mx-auto my-auto bg-white font-sans">
-        <Section>
-          <Container className="mx-auto mt-8 mb-2 max-w-xl rounded-lg border border-slate-200 border-solid p-4 backdrop-blur-sm">
-            <Section>
-              {branding.brandingEnabled && branding.brandingLogo ? (
-                <Img src={branding.brandingLogo} alt="Branding Logo" className="mb-4 h-6" />
-              ) : (
-                <Img src={getAssetUrl('/static/logo.png')} alt="Documenso Logo" className="mb-4 h-6" />
-              )}
-
-              <TemplateDocumentCancel
-                inviterName={inviterName}
-                inviterEmail={inviterEmail}
-                documentName={documentName}
-                assetBaseUrl={assetBaseUrl}
-                cancellationReason={cancellationReason}
-              />
-            </Section>
-          </Container>
-
-          <Hr className="mx-auto mt-12 max-w-xl" />
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter />
-          </Container>
-        </Section>
-      </Body>
-    </Html>
+    <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>
+      <TemplateDocumentCancel
+        inviterName={inviterName}
+        inviterEmail={inviterEmail}
+        documentName={documentName}
+        assetBaseUrl={assetBaseUrl}
+        cancellationReason={cancellationReason}
+      />
+    </TemplateEmailShell>
   );
 };
 

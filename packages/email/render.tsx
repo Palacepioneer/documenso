@@ -4,6 +4,7 @@ import { I18nProvider } from '@lingui/react';
 import * as ReactEmail from '@react-email/render';
 
 import { Tailwind } from './components';
+import { JESS_COLORS, JESS_GOLD_SCALE } from './jess-brand';
 import { BrandingProvider, type BrandingSettings } from './providers/branding';
 
 export type RenderOptions = ReactEmail.Options & {
@@ -12,7 +13,19 @@ export type RenderOptions = ReactEmail.Options & {
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-const colors = (config.theme?.extend?.colors || {}) as Record<string, string>;
+const colors = {
+  ...((config.theme?.extend?.colors || {}) as Record<string, unknown>),
+
+  // Jess Intelligence fork overrides (emails only — the web app keeps its own palette):
+  // 1. `documenso` lime scale -> Jess gold, so every `bg-documenso-500` button renders gold.
+  // 2. `primary` -> literal navy. Upstream emits `color:hsl(var(--primary))`, which is
+  //    invalid in email clients (no CSS variables) and silently falls back to black.
+  documenso: JESS_GOLD_SCALE,
+  primary: {
+    DEFAULT: JESS_COLORS.navy,
+    foreground: JESS_COLORS.cream,
+  },
+} as Record<string, string>;
 
 export const render = async (element: React.ReactNode, options?: RenderOptions) => {
   const { branding, ...otherOptions } = options ?? {};

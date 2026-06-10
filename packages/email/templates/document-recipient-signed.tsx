@@ -1,16 +1,15 @@
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 
-import { Body, Container, Head, Html, Img, Preview, Section } from '../components';
-import { useBranding } from '../providers/branding';
 import { TemplateDocumentRecipientSigned } from '../template-components/template-document-recipient-signed';
-import { TemplateFooter } from '../template-components/template-footer';
+import { TemplateEmailShell } from '../template-components/template-email-shell';
 
 export interface DocumentRecipientSignedEmailTemplateProps {
   documentName?: string;
   recipientName?: string;
   recipientEmail?: string;
   assetBaseUrl?: string;
+  documentLink?: string;
 }
 
 export const DocumentRecipientSignedEmailTemplate = ({
@@ -18,48 +17,24 @@ export const DocumentRecipientSignedEmailTemplate = ({
   recipientName = 'John Doe',
   recipientEmail = 'lucas@documenso.com',
   assetBaseUrl = 'http://localhost:3002',
+  documentLink,
 }: DocumentRecipientSignedEmailTemplateProps) => {
   const { _ } = useLingui();
-  const branding = useBranding();
 
   const recipientReference = recipientName || recipientEmail;
 
-  const previewText = msg`${recipientReference} has signed ${documentName}`;
-
-  const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
-  };
+  const previewText = msg`${recipientReference} signed ${documentName}`;
 
   return (
-    <Html>
-      <Head />
-      <Preview>{_(previewText)}</Preview>
-
-      <Body className="mx-auto my-auto font-sans">
-        <Section className="bg-white">
-          <Container className="mx-auto mt-8 mb-2 max-w-xl rounded-lg border border-slate-200 border-solid p-2 backdrop-blur-sm">
-            <Section className="p-2">
-              {branding.brandingEnabled && branding.brandingLogo ? (
-                <Img src={branding.brandingLogo} alt="Branding Logo" className="mb-4 h-6" />
-              ) : (
-                <Img src={getAssetUrl('/static/logo.png')} alt="Documenso Logo" className="mb-4 h-6" />
-              )}
-
-              <TemplateDocumentRecipientSigned
-                documentName={documentName}
-                recipientName={recipientName}
-                recipientEmail={recipientEmail}
-                assetBaseUrl={assetBaseUrl}
-              />
-            </Section>
-          </Container>
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter />
-          </Container>
-        </Section>
-      </Body>
-    </Html>
+    <TemplateEmailShell previewText={_(previewText)} assetBaseUrl={assetBaseUrl}>
+      <TemplateDocumentRecipientSigned
+        documentName={documentName}
+        recipientName={recipientName}
+        recipientEmail={recipientEmail}
+        assetBaseUrl={assetBaseUrl}
+        documentLink={documentLink}
+      />
+    </TemplateEmailShell>
   );
 };
 
