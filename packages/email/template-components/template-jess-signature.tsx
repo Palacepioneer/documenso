@@ -48,8 +48,8 @@ export const TemplateJessSignature = () => {
           </Text>
           <Text className="my-0 text-xs leading-normal" style={{ color: JESS_COLORS.muted }}>
             cell{' '}
-            <Link href="tel:+17276425370" style={{ color: JESS_COLORS.muted, textDecoration: 'none' }}>
-              (727) 642-5370
+            <Link href="tel:+17276216757" style={{ color: JESS_COLORS.muted, textDecoration: 'none' }}>
+              (727) 621-6757
             </Link>
           </Text>
           <Text className="my-0 pt-0.5 text-xs leading-normal">
