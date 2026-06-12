@@ -51,7 +51,7 @@ forked from the upstream tag **v2.11.0**.
 Documenso is licensed under the GNU Affero General Public License v3.0
 (see `LICENSE`). This modified source is published to satisfy AGPL §13: it
 corresponds to the container image `documenso-jess:v2.11.0-jessmail.7`
-(built from commit `c23c069e` of this branch)
+(corresponding source: commit `c23c069e` of this branch)
 which serves users at https://sign.jessintelligence.com.
 
 Upstream project: https://github.com/documenso/documenso
