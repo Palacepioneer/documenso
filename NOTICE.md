@@ -42,12 +42,16 @@ forked from the upstream tag **v2.11.0**.
   page download CTA promoted to the primary action ("Download signed copy");
   "Share Signing Card" dropdown items removed; last off-palette email colors
   (lime `#7AC455` text, lime `completed.png`, blue `clock.png`) recolored.
+- jessmail.6–.7 increments: final branding/signature polish — email design
+  system tokens, thumbnail routes, and the Jess signature phone line
+  (727) 621-6757 (the three commits ending at `c23c069e`).
 - No changes to signing logic, storage, auth, or any other subsystem.
 
 ## License & source offer (AGPL-3.0 §13)
 Documenso is licensed under the GNU Affero General Public License v3.0
 (see `LICENSE`). This modified source is published to satisfy AGPL §13: it
-corresponds to the container image `documenso-jess:v2.11.0-jessmail.5`
+corresponds to the container image `documenso-jess:v2.11.0-jessmail.7`
+(built from commit `c23c069e` of this branch)
 which serves users at https://sign.jessintelligence.com.
 
 Upstream project: https://github.com/documenso/documenso
